@@ -10,30 +10,39 @@ ApplicationWindow {
     width: 1280
     height: 750
     title: qsTr("Application")
-//    background: Rectangle {
-//        id: rootBackground
-//        color: "#202123"
-//    }
+    //    background: Rectangle {
+    //        id: rootBackground
+    //        color: "#202123"
+    //    }
     Material.theme: Material.Dark
     Material.accent: Material.Purple
 
     menuBar: MenuBar {
-//        height: 50
         Menu {
             id: fileMenu
             width: 100
             title: "文件"
 
             MenuItem {
-                Label {
-                    anchors.centerIn: parent
-                    text: "打开"
+                height: 30
+                text: "新建采集"
+            }
+            MenuItem {
+                height: 30
+                text: "打开"
+
+                onTriggered: {
+                    filePicker.open()
                 }
             }
             MenuItem {
-                Label{
-                    anchors.centerIn: parent
-                    text: qsTr("退出")
+                height: 30
+
+
+                text: qsTr("退出")
+
+                onTriggered: {
+                    Qt.quit()
                 }
             }
         }
@@ -48,6 +57,25 @@ ApplicationWindow {
         Row {
             anchors.fill: parent
             spacing: 6
+        }
+    }
+
+    FilePicker {
+        id: filePicker
+    }
+
+    Item {
+        Loader {
+            anchors.fill: parent
+            anchors.margins: 10
+            sourceComponent: dataReviewPage
+        }
+    }
+
+
+    Component {
+        id: dataReviewPage
+        DataReview {
 
         }
     }

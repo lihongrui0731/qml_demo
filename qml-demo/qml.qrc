@@ -4,5 +4,11 @@
         <file>AutoSizingMenu.qml</file>
         <file>resources/font/roboto/Roboto-Regular.ttf</file>
         <file>resources/font/FangZhengHeiTiJianTi.ttf</file>
+        <file>FilePicker.qml</file>
+        <file>DataReview.qml</file>
+        <file>main.cpp</file>
+        <file>qml-demo.pro</file>
+        <file>qml.qrc</file>
+        <file>Streaming.qml</file>
     </qresource>
 </RCC>
