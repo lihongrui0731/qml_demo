@@ -3,6 +3,7 @@
 #include <QQuickStyle>
 #include <QFontDatabase>
 #include <QFont>
+#include "filemanager.h"
 
 
 int main(int argc, char *argv[])
@@ -14,6 +15,7 @@ int main(int argc, char *argv[])
 #endif
     QGuiApplication app(argc, argv);
 
+    qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");
     QQuickStyle::setStyle("Material");
     QQmlApplicationEngine engine;
 

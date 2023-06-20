@@ -9,6 +9,8 @@
         <file>main.cpp</file>
         <file>qml-demo.pro</file>
         <file>qml.qrc</file>
-        <file>Streaming.qml</file>
+        <file>Stream.qml</file>
+        <file>DeviceConfig.qml</file>
+        <file>config/deviceConfig.js</file>
     </qresource>
 </RCC>

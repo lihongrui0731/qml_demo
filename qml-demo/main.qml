@@ -4,6 +4,10 @@ import QtQuick.Controls 2.15
 import QtQuick.VirtualKeyboard 2.15
 import QtQuick.Controls.Material 2.12
 
+import FileManager 1.0
+
+import "config/deviceConfig.js" as Device_config
+
 ApplicationWindow {
     id: root
     visible: true
@@ -17,15 +21,20 @@ ApplicationWindow {
     Material.theme: Material.Dark
     Material.accent: Material.Purple
 
+    property var deviceConfig: Device_config
+
     menuBar: MenuBar {
         Menu {
             id: fileMenu
-            width: 100
+            width: 150
             title: "文件"
 
             MenuItem {
                 height: 30
                 text: "新建采集"
+                onTriggered: {
+                    pageLoader.sourceComponent = streamPage
+                }
             }
             MenuItem {
                 height: 30
@@ -37,10 +46,7 @@ ApplicationWindow {
             }
             MenuItem {
                 height: 30
-
-
                 text: qsTr("退出")
-
                 onTriggered: {
                     Qt.quit()
                 }
@@ -48,7 +54,20 @@ ApplicationWindow {
         }
         Menu {
             id: editMenu
+            width: 150
             title: qsTr("编辑")
+        }
+        Menu {
+            id: confMenu
+            width: 150
+            title: "配置"
+            MenuItem {
+                height: 30
+                text: qsTr("采集配置")
+                onTriggered: {
+                    deviceConfig.openDeviceConfig()
+                }
+            }
         }
     }
 
@@ -60,16 +79,24 @@ ApplicationWindow {
         }
     }
 
+
     FilePicker {
         id: filePicker
     }
 
+
+
     Item {
         Loader {
+            id: pageLoader
             anchors.fill: parent
             anchors.margins: 10
             sourceComponent: dataReviewPage
         }
+    }
+
+    DeviceConfig {
+        id: deviceConfig
     }
 
 
@@ -78,6 +105,10 @@ ApplicationWindow {
         DataReview {
 
         }
+    }
+    Component {
+        id: streamPage
+        Stream {}
     }
 
     footer: TabBar {}
