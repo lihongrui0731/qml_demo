@@ -6,7 +6,7 @@ import QtQuick.Controls.Material 2.12
 
 import FileManager 1.0
 
-import "config/deviceConfig.js" as Device_config
+import "./config/deviceConfig.js" as Device_config
 
 ApplicationWindow {
     id: root
@@ -21,7 +21,25 @@ ApplicationWindow {
     Material.theme: Material.Dark
     Material.accent: Material.Purple
 
-    property var deviceConfig: Device_config
+    property var deviceConfig: Device_config.config
+    property var getDeviceParams: getDeviceParams()
+    property var uploadList: getUploadList()
+    property string currentDate: Qt.formatDateTime(new Date(), "yyyy-MM-dd HH:mm:ss")
+
+    function getDeviceParams() {
+        return deviceConfig.params
+    }
+    function getUploadList() {
+        return deviceConfig.uploadList
+    }
+    function syncDeviceTime() {
+        deviceConfig.params.timeSync = currentDate
+    }
+
+    Component.onCompleted: {
+        console.log(JSON.stringify(deviceConfig.uploadList))
+        syncDeviceTime()
+    }
 
     menuBar: MenuBar {
         Menu {
@@ -65,7 +83,7 @@ ApplicationWindow {
                 height: 30
                 text: qsTr("采集配置")
                 onTriggered: {
-                    deviceConfig.openDeviceConfig()
+                    deviceConfigDialog.openDeviceConfig()
                 }
             }
         }
@@ -96,7 +114,7 @@ ApplicationWindow {
     }
 
     DeviceConfig {
-        id: deviceConfig
+        id: deviceConfigDialog
     }
 
 
