@@ -22,22 +22,33 @@ ApplicationWindow {
     Material.accent: Material.Purple
 
     property var deviceConfig: Device_config.config
-    property var getDeviceParams: getDeviceParams()
-    property var uploadList: getUploadList()
+    property var deviceParams: root.getDeviceParams()
+    property var uploadList: root.getUploadList()
     property string currentDate: Qt.formatDateTime(new Date(), "yyyy-MM-dd HH:mm:ss")
 
     function getDeviceParams() {
-        return deviceConfig.params
+        return root.deviceConfig.params
     }
     function getUploadList() {
-        return deviceConfig.uploadList
+        var info = root.deviceConfig.uploadList
+        var result = []
+        var keys = Object.keys(info)
+        for (var i=0; i<keys.length; i++) {
+            var item = {}
+            item[keys[i]] = info[keys[i]]
+            result.push(item)
+        }
+        return result
     }
+    function changeUploadList(info) {
+        root.uploadList = info
+    }
+
     function syncDeviceTime() {
         deviceConfig.params.timeSync = currentDate
     }
 
     Component.onCompleted: {
-        console.log(JSON.stringify(deviceConfig.uploadList))
         syncDeviceTime()
     }
 
@@ -98,6 +109,10 @@ ApplicationWindow {
     }
 
 
+    DeviceConfig {
+        id: deviceConfigDialog
+    }
+
     FilePicker {
         id: filePicker
     }
@@ -112,12 +127,6 @@ ApplicationWindow {
             sourceComponent: dataReviewPage
         }
     }
-
-    DeviceConfig {
-        id: deviceConfigDialog
-    }
-
-
     Component {
         id: dataReviewPage
         DataReview {

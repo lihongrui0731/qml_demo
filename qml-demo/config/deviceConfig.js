@@ -12,11 +12,11 @@ const config = {
     },
 
     "uploadList": {
-        leqaEn:true,
-        evEn:true,
-        wavEn:false,
-        fftEn:true,
-        prpdEn:false,
-        localEn:false
+        "leqaEn":true,
+        "evEn":true,
+        "wavEn":false,
+        "fftEn":true,
+        "prpdEn":false,
+        "localEn":false
     }
 }
