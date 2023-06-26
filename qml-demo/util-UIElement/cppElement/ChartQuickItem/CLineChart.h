@@ -62,6 +62,7 @@ class CLineChart : public QQuickPaintedItem
     Q_PROPERTY(bool isDB READ isDB WRITE setDB NOTIFY isDBChanged )
     Q_PROPERTY(bool isLG READ isLG WRITE setLG NOTIFY isLGChanged )
     Q_PROPERTY(QString bgColor READ bgcolor WRITE setBgcolor NOTIFY bgcolorChanged );
+    Q_PROPERTY(QString textColor READ textColor WRITE setTextColor NOTIFY textColorChanged)
 
     struct point {
         float x;
@@ -195,6 +196,7 @@ public:
     QString yAxisTitle(){ return m_yAxisTitle; }
 
     QString bgcolor(){ return m_bgcolor; }
+    QString textColor() {return m_textColor;}
 
     bool isDB(){ return m_isDB; }
     bool isLG(){ return m_isLG; }
@@ -249,6 +251,9 @@ public:
     void setBgcolor( QString bgcolor_ ){
         m_bgcolor = bgcolor_;
     }
+    void setTextColor(QString color) {
+        m_textColor = color;
+    }
 
     void setFontSize( int fontSize_ );
     void setDpi( float dpi );
@@ -277,6 +282,7 @@ signals:
     void linePosChanged();
     void currentIndexChanged();
     void bgcolorChanged();
+    void textColorChanged();
 
     void xAxisTitleChanged();
     void yAxisTitleChanged();
@@ -310,6 +316,7 @@ private:
     QString m_yAxisTitle;
 
     QString m_bgcolor{"#FFFFFF"};
+    QString m_textColor{"#595b5d"};
 
     // x轴对应控件的位置
     float XmaxToPos{0};

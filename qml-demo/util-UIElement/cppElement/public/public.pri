@@ -7,15 +7,15 @@ HEADERS += \
     $$PWD/RhythmGradientBar.h \
     $$PWD/battery.h \
     $$PWD/fontoutlinelabel.h \
-    $$PWD/tdmsdata.h \
-    $$PWD/openrsd.h \
+#    $$PWD/tdmsdata.h \
+#    $$PWD/openrsd.h \
     $$PWD/hostmanager.h
 SOURCES += \
     $$PWD/qcustomplot.cpp \
     $$PWD/RhythmGradientBar.cpp \
     $$PWD/battery.cpp \
-    $$PWD/tdmsdata.cpp \
-    $$PWD/openrsd.cpp \
+#    $$PWD/tdmsdata.cpp \
+#    $$PWD/openrsd.cpp \
     $$PWD/fontoutlinelabel.cpp \
     $$PWD/hostmanager.cpp
 

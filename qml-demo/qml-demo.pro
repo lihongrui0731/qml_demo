@@ -1,6 +1,15 @@
 #include($$PWD/util-UIElement/UIElement.pri)
-QT += quick virtualkeyboard
+QT += quick virtualkeyboard printsupport
 QT += quickcontrols2 gui
+ QT += widgets
+ QT += multimedia
+ QT += charts opengl # datavisualization
+ QT += websockets
+
+DEFINES += QCUSTOMPLOT_USE_OPENGL
+include($$PWD/common.pri)
+include($$PWD/util-UIElement/UIElement.pri)
+include($$PWD/3rdparty/arma.pri)
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -11,7 +20,7 @@ SOURCES += \
         main.cpp
 
 RESOURCES += qml.qrc \
-#             $$PWD/util-UIElement/uiElement.qrc
+             $$PWD/util-UIElement/uiElement.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

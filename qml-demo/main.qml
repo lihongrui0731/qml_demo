@@ -7,6 +7,8 @@ import QtQuick.Controls.Material 2.12
 import FileManager 1.0
 
 import "./config/deviceConfig.js" as Device_config
+import 'qrc:/js/config.js' as UI_config
+import 'qrc:/js/color.js' as UI_color
 
 ApplicationWindow {
     id: root
@@ -20,6 +22,12 @@ ApplicationWindow {
     //    }
     Material.theme: Material.Dark
     Material.accent: Material.Purple
+
+    property string usedConfig: appConfig;
+    property bool showMouse: UI_config[root.usedConfig].showMouse
+
+    property var colorConfig: UI_color[UI_color["used"]]
+    property string cardColor: UI_color
 
     property var deviceConfig: Device_config.config
     property var deviceParams: root.getDeviceParams()
@@ -60,7 +68,7 @@ ApplicationWindow {
 
             MenuItem {
                 height: 30
-                text: "新建采集"
+                text: "新建项目"
                 onTriggered: {
                     pageLoader.sourceComponent = streamPage
                 }
@@ -101,7 +109,7 @@ ApplicationWindow {
     }
 
     header: Rectangle {
-        height: 40
+        height: 30
         Row {
             anchors.fill: parent
             spacing: 6
@@ -120,22 +128,35 @@ ApplicationWindow {
 
 
     Item {
+        width: root.width
+        height: root.height - root.header.height - root.footer.height - root.menuBar.height
         Loader {
             id: pageLoader
             anchors.fill: parent
-            anchors.margins: 10
-            sourceComponent: dataReviewPage
+            anchors.margins: 5
+//            width: parent.width
+//            height: parent.height
+            sourceComponent: streamPage
         }
     }
+
     Component {
         id: dataReviewPage
         DataReview {
-
+            id: dataReview
+            anchors.fill: parent
+            width: parent.width
+            height: parent.height
         }
     }
     Component {
         id: streamPage
-        Stream {}
+        Stream {
+            id: stream
+            anchors.fill: parent
+            width: parent.width
+            height: parent.height
+        }
     }
 
     footer: TabBar {}

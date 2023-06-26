@@ -1,9 +1,10 @@
 #include "audiorender.h"
-#include "src/datamanager.h"
+//#include "src/datamanager.h"
 #include <QFile>
 #include <QStandardPaths>
 #include <QtMath>
 #include <qendian.h>
+#include <QDir>
 #ifdef Q_OS_LINUX
 #include <malloc.h>
 #endif

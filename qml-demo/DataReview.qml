@@ -29,7 +29,6 @@ Item {
                 text: "Label: " + label
 
             }
-
         }
     }
     //    }

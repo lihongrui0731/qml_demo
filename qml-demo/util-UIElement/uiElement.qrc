@@ -89,5 +89,14 @@
         <file>resources/icon/battery/little.ico</file>
         <file>resources/svg/reflash.svg</file>
         <file>qmlElement/chart/SampleLineAxis.qml</file>
+        <file>js/color.js</file>
+        <file>js/config.js</file>
+        <file>js/data1.json</file>
+        <file>js/ev.js</file>
+        <file>js/params.js</file>
+        <file>js/public.js</file>
+        <file>js/sound_config.json</file>
+        <file>js/update.json</file>
+        <file>js/vibration_config.json</file>
     </qresource>
 </RCC>

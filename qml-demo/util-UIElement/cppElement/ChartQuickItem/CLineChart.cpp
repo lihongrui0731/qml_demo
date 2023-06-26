@@ -82,7 +82,7 @@ void CLineChart::initializePlot()
     m_pcustomPlot->xAxis->grid()->setSubGridVisible(false);
     m_pcustomPlot->xAxis->setTickLength(0, 3.0/m_dpi);
     m_pcustomPlot->xAxis->grid()->setZeroLinePen(Qt::NoPen);
-    m_pcustomPlot->xAxis->setTickLabelColor(Qt::black);
+    m_pcustomPlot->xAxis->setTickLabelColor(m_textColor);
     m_pcustomPlot->xAxis->setTickPen(_axisPen);
     m_pcustomPlot->xAxis->grid()->setPen(_pen);
     m_pcustomPlot->xAxis->setBasePen(_axisPen);
@@ -91,7 +91,7 @@ void CLineChart::initializePlot()
         m_pcustomPlot->xAxis->setLabel( m_xAxisTitle );
     }
     m_pcustomPlot->xAxis->setLabelFont( _font );
-    m_pcustomPlot->xAxis->setLabelColor( Qt::black );
+    m_pcustomPlot->xAxis->setLabelColor( m_textColor );
     m_pcustomPlot->xAxis->setAntialiased(true);
 
     m_pcustomPlot->yAxis->setPadding(0);
@@ -103,7 +103,7 @@ void CLineChart::initializePlot()
     m_pcustomPlot->yAxis->grid()->setAntialiasedZeroLine(false);
     m_pcustomPlot->yAxis->grid()->setZeroLinePen(_axisPen);
     m_pcustomPlot->yAxis->setTickPen(_axisPen);
-    m_pcustomPlot->yAxis->setTickLabelColor(Qt::black);
+    m_pcustomPlot->yAxis->setTickLabelColor(m_textColor);
     m_pcustomPlot->yAxis->grid()->setPen(_pen);
     m_pcustomPlot->yAxis->setBasePen(_axisPen);
     m_pcustomPlot->yAxis->setTickLength(0, 3/m_dpi);
@@ -112,7 +112,7 @@ void CLineChart::initializePlot()
         m_pcustomPlot->yAxis->setLabel( m_yAxisTitle );
     }
     m_pcustomPlot->yAxis->setLabelFont( _font );
-    m_pcustomPlot->yAxis->setLabelColor( Qt::black );
+    m_pcustomPlot->yAxis->setLabelColor( m_textColor );
     m_pcustomPlot->yAxis->setLabelPadding(0);
     m_pcustomPlot->yAxis->setAntialiased(true);
 

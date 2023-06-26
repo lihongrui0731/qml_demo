@@ -1,9 +1,12 @@
-#include <QGuiApplication>
+#include <QApplication>
+#include <QCoreApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QQuickStyle>
 #include <QFontDatabase>
 #include <QFont>
 #include "filemanager.h"
+#include "CLineChart.h"
 
 
 int main(int argc, char *argv[])
@@ -13,11 +16,15 @@ int main(int argc, char *argv[])
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-    QGuiApplication app(argc, argv);
+    QString appConfig{"config_SandV"};
+    QApplication app(argc, argv);
 
     qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");
+    qmlRegisterType<CLineChart>("CLineChart", 1, 0, "CLineChart");
     QQuickStyle::setStyle("Material");
     QQmlApplicationEngine engine;
+
+    engine.rootContext()->setContextProperty("appConfig" ,appConfig);
 
     qreal dpi = app.devicePixelRatio();
 
