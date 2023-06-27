@@ -7,6 +7,10 @@
 #include <QFont>
 #include "filemanager.h"
 #include "CLineChart.h"
+#include "RhythmGradientBar.h"
+#include "TimeCursorLabel.h"
+#include "InstantSpectrumChart.h"
+#include "TimeSpectraChart.h"
 
 
 int main(int argc, char *argv[])
@@ -21,6 +25,11 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");
     qmlRegisterType<CLineChart>("CLineChart", 1, 0, "CLineChart");
+    qmlRegisterType<RhythmGradientBar>("GradientBar", 1, 0, "ChartGradientBar");
+    qmlRegisterType<InstantSpectrumChart>("InstantSpectrum", 1, 0, "InstantSpectrumChart");
+    qmlRegisterType<TimeSpectraChart>("TimeSpectra", 1, 0, "TimeSpectra");
+    qmlRegisterType<TimeCursorLabel>("TimerCursor", 1, 0, "TimeAxis");
+
     QQuickStyle::setStyle("Material");
     QQmlApplicationEngine engine;
 

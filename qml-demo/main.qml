@@ -27,7 +27,7 @@ ApplicationWindow {
     property bool showMouse: UI_config[root.usedConfig].showMouse
 
     property var colorConfig: UI_color[UI_color["used"]]
-    property string cardColor: UI_color
+    property string cardColor: colorConfig["cardColor"]
 
     property var deviceConfig: Device_config.config
     property var deviceParams: root.getDeviceParams()
