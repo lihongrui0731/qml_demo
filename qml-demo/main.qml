@@ -159,5 +159,9 @@ ApplicationWindow {
         }
     }
 
+    Connections {
+
+    }
+
     footer: TabBar {}
 }

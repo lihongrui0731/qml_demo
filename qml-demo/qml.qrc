@@ -6,5 +6,7 @@
         <file>DeviceConfig.qml</file>
         <file>DataReview.qml</file>
         <file>FilePicker.qml</file>
+        <file>charts/LeqChartBox.qml</file>
+        <file>components/Card.qml</file>
     </qresource>
 </RCC>
