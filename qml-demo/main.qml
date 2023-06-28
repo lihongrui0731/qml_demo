@@ -5,7 +5,7 @@ import QtQuick.VirtualKeyboard 2.15
 import QtQuick.Controls.Material 2.12
 
 import FileManager 1.0
-
+import "./pages"
 import "./config/deviceConfig.js" as Device_config
 import 'qrc:/js/config.js' as UI_config
 import 'qrc:/js/color.js' as UI_color

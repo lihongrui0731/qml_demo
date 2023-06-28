@@ -1,12 +1,14 @@
 <RCC>
     <qresource prefix="/">
         <file>config/deviceConfig.js</file>
-        <file>Stream.qml</file>
         <file>main.qml</file>
         <file>DeviceConfig.qml</file>
-        <file>DataReview.qml</file>
         <file>FilePicker.qml</file>
         <file>charts/LeqChartBox.qml</file>
         <file>components/Card.qml</file>
+        <file>charts/FFTChartBox.qml</file>
+        <file>pages/DataReview.qml</file>
+        <file>pages/Stream.qml</file>
+        <file>charts/WaveChartBox.qml</file>
     </qresource>
 </RCC>

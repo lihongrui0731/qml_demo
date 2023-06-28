@@ -18,11 +18,11 @@ include($$PWD/3rdparty/arma.pri)
 SOURCES += \
         WebSocketData.cpp \
         WebSocketManager.cpp \
-        configmanager.cpp \
-        datathread.cpp \
+#        configmanager.cpp \
+#        datathread.cpp \
         filemanager.cpp \
         main.cpp \
-        tdmsdata.cpp \
+#        tdmsdata.cpp \
         uithread.cpp \
         ws_server.cpp
 
@@ -43,10 +43,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
   WebSocketData.h \
   WebSocketManager.h \
-  configmanager.h \
-  datathread.h \
+#  configmanager.h \
+#  datathread.h \
   easy.h \
   filemanager.h \
-  tdmsdata.h \
+#  tdmsdata.h \
   uithread.h \
   ws_server.h
