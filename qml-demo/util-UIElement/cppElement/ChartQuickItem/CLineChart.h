@@ -62,7 +62,7 @@ class CLineChart : public QQuickPaintedItem
     Q_PROPERTY(bool isDB READ isDB WRITE setDB NOTIFY isDBChanged )
     Q_PROPERTY(bool isLG READ isLG WRITE setLG NOTIFY isLGChanged )
     Q_PROPERTY(QString bgColor READ bgcolor WRITE setBgcolor NOTIFY bgcolorChanged );
-    Q_PROPERTY(QString textColor READ textColor WRITE setTextColor NOTIFY textColorChanged)
+    Q_PROPERTY(QString textColor READ textColor WRITE setTextColor NOTIFY textColorChanged);
 
     struct point {
         float x;

@@ -11,7 +11,19 @@ public:
     WebSocketManager();
 
 private:
-    WsServer* WebSocketServer;
+    WsServer * WebSocketServer;
+
+signals:
+    void clientAccepted(QString clientId);
+    void incomingTextMessageReceived(const QString& message);
+
+public slots:
+    // Receiving
+    void onClientAccepted(QString clientId);
+    void onIncomingTextMessageReceived(const QString& message);
+
+    // Sending
+    void sendTextMessage(const QString message);
 };
 
 

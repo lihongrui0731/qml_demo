@@ -5,6 +5,7 @@ import QtQuick.VirtualKeyboard 2.15
 import QtQuick.Controls.Material 2.12
 
 import FileManager 1.0
+import WebSocketManager 1.0
 import "./pages"
 import "./config/deviceConfig.js" as Device_config
 import 'qrc:/js/config.js' as UI_config
@@ -23,8 +24,11 @@ ApplicationWindow {
     Material.theme: Material.Dark
     Material.accent: Material.Purple
 
+//    property real enlarge: enlargeSetting
+//    property real dpi:Screen.devicePixelRatio?Screen.devicePixelRatio / root.enlarge : 1.0 / root.enlarge
     property string usedConfig: appConfig;
     property bool showMouse: UI_config[root.usedConfig].showMouse
+    property bool useOpengl: UI_config[root.usedConfig].useOpengl
 
     property var colorConfig: UI_color[UI_color["used"]]
     property string cardColor: colorConfig["cardColor"]
@@ -156,11 +160,21 @@ ApplicationWindow {
             anchors.fill: parent
             width: parent.width
             height: parent.height
+            Connections {
+                target: webSocketManager
+                function onClientAccepted(clientId) {
+                    console.log(clientId)
+                    stream.dataReceived(clientId)
+                }
+                function onIncomingTextMessageReceived(message) {
+                    console.log("WebSocketManager: ", message)
+                }
+            }
         }
     }
 
-    Connections {
-
+    WebSocketManager {
+        id: webSocketManager
     }
 
     footer: TabBar {}

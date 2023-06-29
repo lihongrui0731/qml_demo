@@ -13,7 +13,7 @@ Item {
             cardContentPosition = waveChartBox.getContentPosition()
         }
 
-        SpectrumChart {
+        TimedataChart {
             id: waveChart
             anchors.margins: 5
             x: waveChartBox.cardContentPosition.x

@@ -8,6 +8,10 @@ Item {
 //    anchors.fill: parent
     width: parent.width - parent.anchors.margins
     height: parent.height - parent.anchors.margins
+    function dataReceived(data) {
+        console.log("stream page: ", data)
+    }
+
     Column {
         anchors.fill: parent
         spacing: 5
@@ -69,27 +73,35 @@ Item {
             spacing: 5
             width: stream.width
             height: (stream.height - parent.spacing) * 0.5
-            Item {
+            WaveChartBox {
                 height: parent.height
                 width: (parent.width - parent.spacing) * 0.5
-                Loader {
-//                    height: parent.height
-//                    width: (parent.width - parent.spacing) * 0.5
-                    anchors.fill: parent
-                    sourceComponent: rect
-                }
-                TimedataChart {
-                    anchors.top: parent.anchors.top
-                    height: parent.height - 8
-                    width: parent.width - 8
-                    anchors.centerIn: parent
-                }
             }
-            Loader {
+            PrpdChartBox {
                 height: parent.height
                 width: (parent.width - parent.spacing) * 0.5
-                sourceComponent: rect
             }
+//            Item {
+//                height: parent.height
+//                width: (parent.width - parent.spacing) * 0.5
+//                Loader {
+////                    height: parent.height
+////                    width: (parent.width - parent.spacing) * 0.5
+//                    anchors.fill: parent
+//                    sourceComponent: rect
+//                }
+//                TimedataChart {
+//                    anchors.top: parent.anchors.top
+//                    height: parent.height - 8
+//                    width: parent.width - 8
+//                    anchors.centerIn: parent
+//                }
+//            }
+//            Loader {
+//                height: parent.height
+//                width: (parent.width - parent.spacing) * 0.5
+//                sourceComponent: rect
+//            }
 
         }
 

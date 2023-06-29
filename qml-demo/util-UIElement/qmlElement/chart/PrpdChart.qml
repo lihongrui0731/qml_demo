@@ -11,6 +11,7 @@ Item {
     property bool isFull: false
     property var dataArr:({})
     property bool disabled: false
+    property string backgroundColor: root.colorConfig["cardColor"]
 
     function changeTimeLine( timeline ){        
         if( scatterChart.disabled ) return;
@@ -68,6 +69,11 @@ Item {
         fontSize: 10 / root.dpi
         dpi: root.dpi
         useOpengl: root.useOpengl
+        background: scatterChart.backgroundColor
+        textColor: "#aaaaaa"
+        Component.onCompleted: {
+            schart.rePaint();
+        }
     }
 
 }

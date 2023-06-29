@@ -69,8 +69,8 @@ void ScatterChart::initializePlot(){
         m_pcustomPlot = nullptr;
     }
 
-    m_ppixMap = new QPixmap(width()*m_dpi,height()*m_dpi);
-    m_ppixMap->fill(Qt::white);
+    m_ppixMap = new QPixmap(100, 100);
+    m_ppixMap->fill(m_background);
 
     QPen _pen;
     _pen.setColor(Qt::lightGray);
@@ -112,7 +112,7 @@ void ScatterChart::initializePlot(){
     }
     m_pcustomPlot->xAxis->setLabelPadding(0);
     m_pcustomPlot->xAxis->setLabelFont( _font );
-    m_pcustomPlot->xAxis->setLabelColor( Qt::black );
+    m_pcustomPlot->xAxis->setLabelColor( m_textColor );
     m_pcustomPlot->xAxis->setAntialiased(true);
 
     m_pcustomPlot->yAxis->setVisible(true);
@@ -123,7 +123,7 @@ void ScatterChart::initializePlot(){
     m_pcustomPlot->yAxis->grid()->setAntialiasedZeroLine(false);
     m_pcustomPlot->yAxis->grid()->setZeroLinePen(_axisPen);
     m_pcustomPlot->yAxis->setTickPen(_axisPen);
-    m_pcustomPlot->yAxis->setTickLabelColor(Qt::black);
+    m_pcustomPlot->yAxis->setTickLabelColor(m_textColor);
     m_pcustomPlot->yAxis->grid()->setPen(_pen);
     m_pcustomPlot->yAxis->setBasePen(_axisPen);
     m_pcustomPlot->yAxis->setTickLength(0, 3.0/m_dpi);
@@ -134,7 +134,7 @@ void ScatterChart::initializePlot(){
     }
     m_pcustomPlot->yAxis->setLabelPadding(0);
     m_pcustomPlot->yAxis->setLabelFont( _font );
-    m_pcustomPlot->yAxis->setLabelColor( Qt::black );
+    m_pcustomPlot->yAxis->setLabelColor( m_textColor );
 
     m_pcustomPlot->xAxis2->setVisible(false);
     m_pcustomPlot->xAxis2->setTickLabels(false);
@@ -150,7 +150,7 @@ void ScatterChart::initializePlot(){
     m_pcustomPlot->yAxis2->setTicks(false);
     m_pcustomPlot->yAxis2->setSubTicks(false);
     m_pcustomPlot->yAxis2->setTickLength(0, 0);
-    m_pcustomPlot->yAxis2->setTickLabelColor(Qt::black);
+    m_pcustomPlot->yAxis2->setTickLabelColor(m_textColor);
     m_pcustomPlot->yAxis2->setTickPen(_axisPen);
     m_pcustomPlot->yAxis2->grid()->setPen(_pen);
     m_pcustomPlot->yAxis2->setBasePen(_axisPen);

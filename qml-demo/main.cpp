@@ -10,6 +10,7 @@
 #include "TimeCursorLabel.h"
 #include "InstantSpectrumChart.h"
 #include "TimeSpectraChart.h"
+#include "scatterchart.h"
 #include "filemanager.h"
 #include "WebSocketManager.h"
 
@@ -28,8 +29,10 @@ int main(int argc, char *argv[]) {
     qmlRegisterType<InstantSpectrumChart>("InstantSpectrum", 1, 0, "InstantSpectrumChart");
     qmlRegisterType<TimeSpectraChart>("TimeSpectra", 1, 0, "TimeSpectra");
     qmlRegisterType<TimeCursorLabel>("TimerCursor", 1, 0, "TimeAxis");
+    qmlRegisterType<ScatterChart>("ScatterChart", 1, 0, "ScatterChart");
 
     qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");
+    qmlRegisterType<WebSocketManager>("WebSocketManager", 1, 0, "WebSocketManager");
 
     WebSocketManager webSocketManager;
 

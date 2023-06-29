@@ -10,5 +10,7 @@
         <file>pages/DataReview.qml</file>
         <file>pages/Stream.qml</file>
         <file>charts/WaveChartBox.qml</file>
+        <file>charts/PrpdChartBox.qml</file>
+        <file>WebSocketServer.qml</file>
     </qresource>
 </RCC>
