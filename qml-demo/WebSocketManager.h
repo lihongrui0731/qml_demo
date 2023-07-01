@@ -9,9 +9,11 @@ class WebSocketManager : public QObject
     Q_OBJECT
 public:
     WebSocketManager();
+    ~WebSocketManager();
 
 private:
     WsServer * WebSocketServer;
+    QThread* wsServerThread;
 
 signals:
     void clientAccepted(QString clientId);
