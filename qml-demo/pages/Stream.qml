@@ -142,4 +142,18 @@ Item {
             width: (parent.width - parent.spacing) * 0.5
         }
     }
+
+    signal stop()
+    signal record()
+    Connections {
+        target: root
+        function onRecord() {
+            console.log("record in stream page")
+            record()
+        }
+        function onStop() {
+            stop()
+        }
+    }
+
 }

@@ -36,6 +36,7 @@ Rectangle {
             Text {
                 id: name
                 text: qsTr(title)
+                font.pixelSize: 10/root.dpi
                 anchors.left: parent.left
                 anchors.leftMargin: card.margins
                 anchors.verticalCenter: parent.verticalCenter

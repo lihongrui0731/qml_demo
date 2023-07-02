@@ -24,8 +24,8 @@ ApplicationWindow {
     Material.theme: Material.Dark
     Material.accent: Material.Purple
 
-//    property real enlarge: enlargeSetting
-//    property real dpi:Screen.devicePixelRatio?Screen.devicePixelRatio / root.enlarge : 1.0 / root.enlarge
+    property real enlarge: 2.0
+    property real dpi:Screen.devicePixelRatio?Screen.devicePixelRatio / root.enlarge : 1.0 / root.enlarge
     property string usedConfig: appConfig;
     property bool showMouse: UI_config[root.usedConfig].showMouse
     property bool useOpengl: UI_config[root.usedConfig].useOpengl
@@ -58,10 +58,17 @@ ApplicationWindow {
 
     function syncDeviceTime() {
         deviceConfig.params.timeSync = currentDate
+
     }
+
+    signal record()
+    signal stop()
 
     Component.onCompleted: {
         syncDeviceTime()
+    }
+    WebSocketManager {
+        id: webSocketManager
     }
 
     menuBar: MenuBar {
@@ -117,6 +124,23 @@ ApplicationWindow {
         Row {
             anchors.fill: parent
             spacing: 6
+
+            Button {
+                text: "开始"
+                font.pixelSize: 10/root.dpi
+                height: parent.height
+                onClicked: {
+                    record()
+                }
+            }
+            Button {
+                text: "停止"
+                font.pixelSize: 10/root.dpi
+                height: parent.height
+                onClicked: {
+                    stop()
+                }
+            }
         }
     }
 
@@ -170,12 +194,27 @@ ApplicationWindow {
                     console.log("WebSocketManager: ", message)
                 }
             }
+            Connections {
+                target: stream
+                function onRecord() {
+                    var msg = {
+                        "jsonrpc": "2.0",
+                        "method": "record"
+                    }
+                    webSocketManager.sendTextMessage(JSON.stringify(msg))
+                }
+
+                function onStop() {
+                    var msg = {
+                        "jsonrpc": "2.0",
+                        "method": "stop"
+                    }
+                    webSocketManager.sendTextMessage(JSON.stringify(msg))
+                }
+            }
         }
     }
 
-    WebSocketManager {
-        id: webSocketManager
-    }
 
     footer: TabBar {}
 }

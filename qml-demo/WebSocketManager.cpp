@@ -9,6 +9,7 @@ WebSocketManager::WebSocketManager() {
 
     connect(WebSocketServer, &WsServer::clientAccepted, this, &WebSocketManager::onClientAccepted);
     connect(WebSocketServer, &WsServer::incomingTextMessageReceived, this, &WebSocketManager::onIncomingTextMessageReceived);
+    connect(this, &WebSocketManager::sendOutgoingTextMessage, WebSocketServer, &WsServer::sendOutgoingTextMessage);
     wsServerThread->start();
 }
 
@@ -32,5 +33,7 @@ void WebSocketManager::onIncomingTextMessageReceived(const QString& message) {
 }
 
 void WebSocketManager::sendTextMessage(QString message) {
-    WebSocketServer->sendOutgoingTextMessage(message);
+//    WebSocketServer->sendOutgoingTextMessage(message);
+    qDebug() << "sending message";
+    emit sendOutgoingTextMessage(message);
 }

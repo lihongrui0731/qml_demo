@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
     qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");
     qmlRegisterType<WebSocketManager>("WebSocketManager", 1, 0, "WebSocketManager");
 
-    WebSocketManager webSocketManager;
+//    WebSocketManager webSocketManager;
 
     QQuickStyle::setStyle("Material");
     QQmlApplicationEngine engine;
