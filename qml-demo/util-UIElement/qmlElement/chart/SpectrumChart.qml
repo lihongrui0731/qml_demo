@@ -11,8 +11,8 @@ Item {
     id:chart
 
     property real currentTimeLine: 0
-    property string channelId: ""
-    property string sourseType: "vibration"
+    property string channelId: "sound"
+    property string sourseType: "sound"
 
     property bool isChangeChannel: false
     property bool isChangeSize: false
@@ -29,9 +29,37 @@ Item {
     property var dataArr: new Array(chart.unitLength).fill(0);
     property int times: 0;
     property int times_: 0; // 记录总次数 第一次的时候 刷新参数
-    property string backgroundColor: root.colorConfig["cardColor"]
 
     property int fontSize: 10/root.dpi
+    property string backgroundColor: root.colorConfig["cardColor"]
+
+    function addSpectraJson( channelId_ , json_ ){
+
+//        if( root.isHide || !root.isVibration ){
+//            return
+//        }
+        if( channelId_ === chart.channelId && !chart.isChangeChannel ){
+            // var json_ = JSON.parse( d );
+            if( ( chart.dt !== json_["dt"] && json_["dt"] > 0 ) || chart.times_ == 0 ){
+
+                lineChart.frameLen = chart.unitLength = json_["bandWidth"] / json_["deltaFreq"];
+                lineChart.dt = chart.dt = json_["dt"];
+                lineChart.xAxisMax = chart.xmax = json_["bandWidth"]
+                lineChart.df = chart.unit = json_["deltaFreq"];
+                lineChart.rePaint();
+                chart.dataArr = new Array(chart.unitLength).fill(0);
+                chart.times = 0;
+            }
+
+            chart.addData( json_["values"] , json_["frameCount"] , json_["frameLength"] );
+
+            var data__ = { max:chart.ymax , values: chart.dataArr };
+
+            lineChart.addJsonData( data__ );
+            // lineChart.addData( json_["values"] , json_["frameCount"] );
+            chart.times_++;
+        }
+    }
 
     Connections {
         target: root
@@ -252,11 +280,11 @@ Item {
         yAxisMin: chart.ymin
 
         xAxisTitle: qsTr("频率（Hz）");
-        yAxisTitle: qsTr("幅值（Pa）");
+        yAxisTitle: qsTr("幅值（dB(A)）");
         dpi: root.dpi
         fontSize: chart.fontSize
+        textColor: "#aaaaaa"
         bgColor: chart.backgroundColor
-        textColor: '#aaaaaa'
 
         frameLen: chart.unitLength
         Component.onCompleted: {

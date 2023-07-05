@@ -13,7 +13,7 @@ const config = {
 
     "uploadList": {
         "leqaEn":true,
-        "evEn":true,
+        "evEn":false,
         "wavEn":false,
         "fftEn":true,
         "prpdEn":false,

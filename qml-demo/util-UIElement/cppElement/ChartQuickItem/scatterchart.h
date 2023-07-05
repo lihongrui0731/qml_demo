@@ -35,7 +35,7 @@ class ScatterChart : public QQuickPaintedItem{
     Q_PROPERTY(QString xAxisTitle READ xAxisTitle WRITE setxAxisTitle NOTIFY xAxisTitleChanged);
     Q_PROPERTY(QString yAxisTitle READ yAxisTitle WRITE setyAxisTitle NOTIFY yAxisTitleChanged);
     Q_PROPERTY(bool useOpengl READ useOpengl WRITE setUseOpengl NOTIFY useOpenglChanged );
-    Q_PROPERTY(QString background READ background WRITE setBackground NOTIFY backgroundChanged);
+    Q_PROPERTY(QString bgColor READ bgColor WRITE setBgColor NOTIFY bgColorChanged);
     Q_PROPERTY(QString textColor READ textColor WRITE setTextColor NOTIFY textColorChanged);
 
 public:
@@ -84,9 +84,9 @@ public:
         m_pcustomPlot->setOpenGl(b_useOpengl);
     }
 
-    QString background(){ return m_background; }
+    QString bgColor(){ return m_background; }
     QString textColor() {return m_textColor;}
-    void setBackground( QString bgcolor_ ){
+    void setBgColor( QString bgcolor_ ){
         m_background = bgcolor_;
     }
     void setTextColor(QString color) {
@@ -114,7 +114,7 @@ private:
     bool b_useOpengl{true};
 
     ScatterChart::color generateColor( float max , float min, float value );
-    QString m_background{};
+    QString m_background;
     QString m_textColor{"#595b5d"};
 
     void initializePlot();
@@ -133,7 +133,7 @@ signals:
     void yAxisTitleChanged();
     void useOpenglChanged();
     void addDataInThread( QCPColorMap* , QJsonObject );
-    void backgroundChanged();
+    void bgColorChanged();
     void textColorChanged();
 };
 

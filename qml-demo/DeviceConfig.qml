@@ -10,9 +10,6 @@ Dialog {
     standardButtons: Dialog.Ok | Dialog.Cancel | Dialog.Apply
 
     property var uploadList: []
-//    onUploadListChanged: {
-//        console.log("------------original changed------------")
-//    }
 
     property var uploadListTemp: []
     function openDeviceConfig() {
@@ -49,10 +46,25 @@ Dialog {
             }
         }
     }
+    function changeUploadList(key, value) {
+        for (var i=0; i<deviceConfigDialog.uploadList.length; i++) {
+//            console.log(deviceConfigDialog.uploadList[i][key])
+            if(deviceConfigDialog.uploadList[i][key] !== undefined) {
+                deviceConfigDialog.uploadList[i][key] = value
+//                console.log("<<<<<<<<<<<<<<<<<<<")
+//                console.log(key, "matched and switch to", value)
+//                console.log("got temp: ", key, deviceConfigDialog.uploadListTemp[i][key])
+//                console.log("and original: ", key, deviceConfigDialog.uploadList[i][key])
+//                console.log(">>>>>>>>>>>>>>>>>>>")
+            }
+        }
+    }
     function confirmUploadList() {
         root.changeUploadList(deviceConfigDialog.uploadList)
         console.log("confirmed!!!!")
         // todo: send info to device
+        console.log(JSON.stringify(deviceConfigDialog.uploadList))
+        root.dispatchUploadList(deviceConfigDialog.uploadList)
     }
 
     function setDeviceParams(params) {
@@ -87,7 +99,7 @@ Dialog {
                 onCheckStateChanged: {
 //                    console.log("checkbox changed", key, checkState)
 //                    console.log(modelData[key])
-                    changeUploadListTemp(key, checkState === 0? false : true)
+                    changeUploadList(key, checkState === 0? false : true)
                 }
             }
         }

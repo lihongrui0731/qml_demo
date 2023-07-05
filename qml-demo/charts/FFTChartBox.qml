@@ -13,7 +13,14 @@ Item {
             cardContentPosition = fftChartBox.getContentPosition()
         }
 
-        SpectrumChart {
+        Connections {
+            target: webSocketManager
+            function onFftDataReceived(fftData) {
+                fftChart.addSpectraData("sound", fftData)
+            }
+        }
+
+        FFTChart {
             id: fftChart
             anchors.margins: 5
             x: fftChartBox.cardContentPosition.x

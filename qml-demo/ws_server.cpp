@@ -155,7 +155,7 @@ void WsServer::onBinaryMessage(const QByteArray& message)
         return;
     }
 
-    logDebug(QString("Binary msg received (from %1)").arg(clientId(sender())));
+//    logDebug(QString("Binary msg received (from %1)").arg(clientId(sender())));
     /*
     if (pClient) {
         pClient->sendBinaryMessage(message);

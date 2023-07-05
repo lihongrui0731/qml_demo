@@ -15,7 +15,8 @@ Item {
     property string sourseType: "sound"
 
     property real frameCount: 2000
-    property real second: 10
+    property real originSecond: 10
+    property real second: chart.originSecond
     property real dt: 0.005
     property real unitLength: chart.second / chart.dt
     property real xmin: -chart.second
@@ -29,9 +30,10 @@ Item {
     property int times: 0;
     property bool isChangeSize: false
     property var maxArr:[];
+    property real allMax: 0;
     property int fontSize: 10/root.dpi
     property bool touchFun: true
-    property string backgroundColor: root.colorConfig["cardColor"]
+    property string backgroundColor: root.cardColor
 
     property bool isStop: false
     property string file: ""
@@ -40,6 +42,8 @@ Item {
         return chart.file != "" || chart.isStop? true : false
     }
 
+
+    // leq[0] 阶段最大值  leq[1] 历史最大值
     function setLeqMData( channelId_ , dt , leq ){
         if( channelId_ === chart.channelId && !chart.isChangeChannel  ){
 
@@ -50,7 +54,14 @@ Item {
                 lineChart.df = chart.unit;
                 lineChart.rePaint();
             }
-            chart.addData( [leq[0]] );
+
+            if( leq[1] !== chart.allMax ){
+                chart.allMax = leq[1];
+                chart.addData( [leq[1]] );
+            }else{
+                chart.addData( [leq[0]] );
+            }
+
             var data__ = { max:chart.ymax , values: chart.dataArr };
             lineChart.addJsonBatchData( data__ );
         }
@@ -124,10 +135,15 @@ Item {
         for( let k in json_ ){
             chart.addData( json_[k]["values"] );
         }
-        chart.second = Math.round(chart.dataArr.length * chart.dt);
+        chart.second = Math.ceil(chart.dataArr.length * chart.dt);
         lineChart.reInitial();
 
         var data__ = { max:chart.ymax , values: chart.dataArr };
+
+         // console.log( json_[0]["dt"]  );
+         // console.log( chart.dataArr )
+         //console.log( chart.dataArr.length )
+
         lineChart.addJsonBatchData( data__ );
     }
 
@@ -186,10 +202,11 @@ Item {
 
     function start(){
         chart.times = 0
-        chart.second = 10
+        chart.second = chart.originSecond
 
         chart.dataArr = [];
         chart.maxArr = [];
+        chart.allMax = 0;
         lineChart.clearData();
         lineChart.resetCurveLine()
     }
@@ -197,9 +214,10 @@ Item {
     function stop(){
     }
 
-    function setFrameCount( channelId_ , count ){
+    function setFrameCount( channelId_ , count , time ){
         if( channelId_ === chart.channelId ){
             chart.frameCount = count
+            chart.second = Math.ceil(time / 1000)
         }
     }
 
@@ -221,12 +239,12 @@ Item {
         yAxisMax: chart.ymax
         yAxisMin: 0
         xAxisTitle: qsTr("时间（s）");
-        yAxisTitle: qsTr("dB");
+        yAxisTitle: qsTr("dB(A)");
         dpi: root.dpi
         fontSize: chart.fontSize
         frameLen: chart.unitLength
-        bgColor: chart.backgroundColor
         textColor: "#aaaaaa"
+        bgColor: chart.backgroundColor
         Component.onCompleted: {
             lineChart.rePaint();
         }
@@ -381,7 +399,7 @@ Item {
                     id: menu_export
                     height: 40 / root.dpi
                     text: "导出数据到csv"
-                    visible: root.sys !== "linux"
+                    visible: root.sys != "linux"
                     enabled: chart.checkStatus();
                     onTriggered: {
                         folderDialog.open();
@@ -412,7 +430,7 @@ Item {
                 }
 
                 Component.onCompleted: {
-                    if( root.sys === "linux" ){
+                    if( root.sys == "linux" ){
                         option_menu.removeItem( menu_export )
                     }else{
                         option_menu.removeItem( menu_save_csv )

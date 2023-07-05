@@ -14,6 +14,13 @@ Item {
             console.log(cardContentPosition.width, cardContentPosition.height)
         }
 
+        Connections {
+            target: webSocketManager
+            function onPrpdDataReceived(prpdData) {
+                prpdChart.addData(prpdData)
+            }
+        }
+
         PrpdChart {
             id: prpdChart
             anchors.margins: 5

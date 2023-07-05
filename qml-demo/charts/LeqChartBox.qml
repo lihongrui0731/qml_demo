@@ -14,6 +14,14 @@ Item {
             console.log(cardContentPosition.width, cardContentPosition.height)
         }
 
+        Connections {
+            target: webSocketManager
+            function onLeqDataReceived(leqData) {
+                leqData.dt = 1 / leqData.values.length
+                leqChart.setLeqData("sound", JSON.stringify(leqData))
+            }
+        }
+
         LeqChart {
             id: leqChart
             anchors.margins: 5

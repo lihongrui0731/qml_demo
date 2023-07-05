@@ -598,7 +598,7 @@ Item {
         height: parent.height
         clip: true
 
-        TimeSpectra {
+        RhythmTimeSpectraChart {
             id: spectraChart
             x:0
             y:0
@@ -765,7 +765,7 @@ Item {
         //    property double yAxisUnit: chart.sourseType == "sound"?5.0:1.0
             property double yAxisUnit: chart.yunit
 
-            InstantSpectrumChart{
+            RhythmInstantSpectrumChart{
                 id: spectrumChart
                 // 坐标轴偏移 非5倍数情况下 需要需要位移掉多出的部分
 

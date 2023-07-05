@@ -1,7 +1,9 @@
 #include "WebSocketManager.h"
+#include "./src/dataType.h"
 
 // construction
-WebSocketManager::WebSocketManager() {
+WebSocketManager::WebSocketManager()
+{
     WebSocketServer = new WsServer;
 
     wsServerThread = new QThread();
@@ -9,12 +11,14 @@ WebSocketManager::WebSocketManager() {
 
     connect(WebSocketServer, &WsServer::clientAccepted, this, &WebSocketManager::onClientAccepted);
     connect(WebSocketServer, &WsServer::incomingTextMessageReceived, this, &WebSocketManager::onIncomingTextMessageReceived);
+    connect(WebSocketServer, &WsServer::incomingBinaryMessageReceived, this, &WebSocketManager::onIncomingBinaryMessageReceived);
     connect(this, &WebSocketManager::sendOutgoingTextMessage, WebSocketServer, &WsServer::sendOutgoingTextMessage);
     wsServerThread->start();
 }
 
 // distruction
-WebSocketManager::~WebSocketManager() {
+WebSocketManager::~WebSocketManager()
+{
     if(wsServerThread != nullptr) {
         wsServerThread->quit();
         wsServerThread->wait();
@@ -23,17 +27,90 @@ WebSocketManager::~WebSocketManager() {
     }
 }
 
-void WebSocketManager::onClientAccepted(QString clientId) {
+void WebSocketManager::onClientAccepted(QString clientId)
+{
     emit clientAccepted(clientId);
 }
 
-void WebSocketManager::onIncomingTextMessageReceived(const QString& message) {
-    qDebug() << "WebSocketManager - " << message;
+void WebSocketManager::onIncomingTextMessageReceived(const QString& message)
+{
+//    qDebug() << "WebSocketManager - " << "message arrived";
     emit incomingTextMessageReceived(message);
+    messageReceived(message);
 }
 
-void WebSocketManager::sendTextMessage(QString message) {
-//    WebSocketServer->sendOutgoingTextMessage(message);
+void WebSocketManager::onIncomingBinaryMessageReceived(const QByteArray& message)
+{
+    qDebug() << "binary received" << message.size();
+    handleWaveData(message);
+}
+
+void WebSocketManager::sendTextMessage(QString message)
+{
+    //    WebSocketServer->sendOutgoingTextMessage(message);
     qDebug() << "sending message";
     emit sendOutgoingTextMessage(message);
+}
+
+
+void WebSocketManager::messageReceived(const QString& textData)
+{
+    QJsonDocument jdoc = QJsonDocument::fromJson(textData.toLatin1());
+    QJsonObject dataObj = jdoc.object();
+    QJsonObject params = dataObj["params"].toObject();
+    if(dataObj["method"] == "deviceID") {
+        QString deviceID = params["deviceID"].toString();
+        handleDeviceID(deviceID);
+    }
+    if(dataObj["method"] == "dataFrame") {
+        handleDataFrame(dataObj["params"].toObject());
+    }
+}
+void WebSocketManager::handleDeviceID(const QString& deviceID)
+{
+    qDebug() << deviceID << "get in";
+    emit deviceIDReceived(deviceID);
+}
+void WebSocketManager::handleDataFrame(const QJsonObject& data)
+{
+    QString frameType = data["frameType"].toString();
+    if(frameType == "Level_A") {
+        qDebug() << "leq received";
+        emit leqDataReceived(data["data"].toObject());
+    }
+    if(frameType == "spectrum") {
+        qDebug() << "fft received";
+        emit fftDataReceived(data["data"].toObject());
+    }
+    if(frameType == "PRPD") {
+        qDebug() << "prpd received";
+        emit prpdDataReceived(data["data"].toObject());
+    }
+}
+
+void WebSocketManager::handleWaveData(const QByteArray& data)
+{
+    QDataStream reader(data);
+    setupStreamReader(reader);
+    QScopedPointer<HeaderInfo> header { new HeaderInfo };
+    reader >> header->timestamp >> header->channelFlag;
+//    reader.skipRawData(7);
+    int channel{(int)(header->channelFlag)};
+    int byteLength { data.size() - 12 };
+    int arrayLength { byteLength / (int)(sizeof(float)) };
+    QVector<float> values;
+
+    for (int i{0}; i<arrayLength; ++i) {
+        qint32 value;
+        reader >> value;
+        values.push_back(value);
+    }
+
+    emit waveDataReceived(channel, values);
+}
+void WebSocketManager::setupStreamReader(QDataStream& reader)
+{
+    reader.setVersion(QDataStream::Qt_5_12);
+    reader.setByteOrder(QDataStream::LittleEndian);
+    reader.setFloatingPointPrecision(QDataStream::SinglePrecision);
 }

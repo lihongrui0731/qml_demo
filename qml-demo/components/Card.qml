@@ -26,7 +26,7 @@ Rectangle {
         id: card
         anchors.fill: parent
         property real cardHeaderHeight: 30
-        property real margins: 0
+        property real margins: 5
 
         Rectangle {
             id: cardHeader
@@ -36,7 +36,8 @@ Rectangle {
             Text {
                 id: name
                 text: qsTr(title)
-                font.pixelSize: 10/root.dpi
+                font.pixelSize: 14/root.dpi
+//                x: card.margins
                 anchors.left: parent.left
                 anchors.leftMargin: card.margins
                 anchors.verticalCenter: parent.verticalCenter
@@ -47,7 +48,7 @@ Rectangle {
             id: cardContent
             x: card.margins
             y: cardHeader.height
-            width: parent.width
+            width: parent.width - card.margins
             height: parent.height - cardHeader.height
             color: root.cardColor
             radius: 5

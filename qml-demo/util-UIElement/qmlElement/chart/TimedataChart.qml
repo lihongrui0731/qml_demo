@@ -12,7 +12,7 @@ Item {
 
     property real currentTimeLine: 0
     property string channelId: ""
-    property string sourseType: "vibration"
+    property string sourseType: "sound"
 
     property bool isChangeChannel: false
 
@@ -31,25 +31,63 @@ Item {
     property bool isChangeSize: false
 
     property int fontSize: 10/root.dpi
+    property string backgroundColor: root.cardColor
 
     Connections {
         target: root
         function onActiveChanged(){
             if( root.active ){
-                chart.isChangeChannel = true;
-                lineChart.reInitial();
-                lineChart.reSize();
-                chart.isChangeChannel = false;
+                chart.reflash()
             }
         }
-        function onIsVibrationChanged(){
-            return;
-            if( root.isVibration ){
-                chart.isChangeChannel = true;
-                lineChart.reInitial();
-                lineChart.reSize();
-                chart.isChangeChannel = false;
+    }
+
+    function reflash(){
+        chart.isChangeChannel = true;
+        lineChart.reInitial();
+        lineChart.reSize();
+        chart.isChangeChannel = false;
+    }
+
+    function setJsonData(channelId_ , json_){
+        if( channelId_ === chart.channelId && !chart.isChangeChannel ){
+            // var json_ = JSON.parse( d );
+            if( ( chart.dt !== json_["dt"] && json_["dt"] > 0 ) || chart.times == 0 ){
+                chart.dt = json_["dt"];
+                chart.second = json_["values"].length * chart.dt;
+
+                chart.unitLength = json_["values"].length
+
+                lineChart.df = chart.unit;
+                lineChart.rePaint();
             }
+            chart.addData( json_["values"] );
+            var data__ = { max:chart.ymax , values: chart.dataArr };
+            lineChart.addJsonData( data__ );
+        }
+    }
+
+    function setData( channelId_ , dt_ , list , len_ ,max_ ){
+        if( channelId_ === chart.channelId ){
+
+            chart.dt = dt_;
+            chart.second = Math.round(len_ * chart.dt);
+            chart.unitLength = len_
+            lineChart.df = chart.unit;
+            lineChart.rePaint();
+
+            if( lineChart.isDB ){
+                max_ = 20 * Math.log10( max_ )
+            }
+
+            if( chart.ymax != max_ || chart.ymin != -max_ ){
+                lineChart.yAxisSelfChange( max_ , -max_ , 2 );
+                chart.ymax = lineChart.yAxisMax
+                chart.ymin = lineChart.yAxisMin
+            }
+
+            lineChart.addData( list , len_);
+            lineChart.reSize();
         }
     }
 
@@ -60,104 +98,20 @@ Item {
             if( root.isHide || !root.isVibration ){
                 return
             }
-            if( channelId_ === chart.channelId && !chart.isChangeChannel ){
-                // var json_ = JSON.parse( d );
-                if( ( chart.dt !== json_["dt"] && json_["dt"] > 0 ) || chart.times == 0 ){
-                    chart.dt = json_["dt"];
-                    chart.second = json_["values"].length * chart.dt;
-
-                    chart.unitLength = json_["values"].length
-
-                    lineChart.df = chart.unit;
-                    lineChart.rePaint();
-                }
-                chart.addData( json_["values"] );
-                var data__ = { max:chart.ymax , values: chart.dataArr };
-                lineChart.addJsonData( data__ );
-            }
-
+            chart.setJsonData();
         }
 
         function onSendTimedataFromFile( channelId_ , dt_ , list , len_ ,max_ ){
-            if( channelId_ === chart.channelId ){
-
-                chart.dt = dt_;
-                chart.second = Math.round(len_ * chart.dt);
-                chart.unitLength = len_
-                lineChart.df = chart.unit;
-                lineChart.rePaint();
-
-                if( lineChart.isDB ){
-                    max_ = 20 * Math.log10( max_ )
-                }
-
-                if( chart.ymax != max_ || chart.ymin != -max_ ){
-                    lineChart.yAxisSelfChange( max_ , -max_ , 2 );
-                    chart.ymax = lineChart.yAxisMax
-                    chart.ymin = lineChart.yAxisMin
-                }
-
-                lineChart.addData( list , len_);
-                lineChart.reSize();
-            }
+            chart.setData(channelId_ , dt_ , list , len_ ,max_);
         }
 
         function onSendTimedataFromThread( data , dt , channelId_ , len ,  max ){
-            if( channelId_ === chart.channelId ){
-                chart.dt = dt;
-                chart.second = Math.round(len * chart.dt);
-                chart.unitLength = len
-                lineChart.df = chart.unit;
-                lineChart.rePaint();
-
-                if( lineChart.isDB ){
-                    max = 20 * Math.log10( max )
-                }
-
-                if( chart.ymax != max || chart.ymin != -max ){
-                    lineChart.yAxisSelfChange( max , -max , 2 );
-                    chart.ymax = lineChart.yAxisMax
-                    chart.ymin = lineChart.yAxisMin
-                }
-
-                lineChart.addData( data , len);
-
-            }
+            chart.setData(channelId_ , dt , data , len ,max);
         }
 
     }
 
-        /*
-        function onSendTimedataFromFile( channelId_ , d ){
-
-            if( d === "{}" ){
-                return
-            }
-
-            if( channelId_ == chart.channelId && !isChangeChannel ){
-
-                let float32 = new Float32Array([20.1,10.2]);
-                 console.log( float32.byteLength );
-
-                var json_ = JSON.parse( d );
-
-                chart.dt = json_["dt"];
-                chart.second = Math.round(json_["values"].length * chart.dt);
-                chart.unitLength = json_["values"].length
-
-                lineChart.df = chart.unit;
-
-                lineChart.rePaint();
-
-                chart.addData( json_["values"] );
-                var data__ = { max:chart.ymax , values: chart.dataArr };
-
-                lineChart.addJsonData( JSON.stringify( data__));
-            }
-
-        }*/
-
-
+    // 处理json数据
     function addData( data ){
         var max = chart.ymax
         var max_ = 0
@@ -238,12 +192,12 @@ Item {
         xAxisMin: chart.xmin
         yAxisMax: chart.ymax
         yAxisMin: chart.ymin
-        xAxisTitle: qsTr("时间（s）");
+        xAxisTitle: qsTr("时间（ms）");
         yAxisTitle: qsTr("幅值（Pa）");
         dpi: root.dpi
         fontSize: chart.fontSize
-        bgColor: root.cardColor
         textColor: "#aaaaaa"
+        bgColor: chart.backgroundColor
 
         frameLen: chart.unitLength
         Component.onCompleted: {

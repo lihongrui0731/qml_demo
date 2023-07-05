@@ -6,6 +6,7 @@ import QtQuick.Controls.Material 2.12
 
 import FileManager 1.0
 import WebSocketManager 1.0
+import "./components"
 import "./pages"
 import "./config/deviceConfig.js" as Device_config
 import 'qrc:/js/config.js' as UI_config
@@ -24,8 +25,9 @@ ApplicationWindow {
     Material.theme: Material.Dark
     Material.accent: Material.Purple
 
-    property real enlarge: 2.0
-    property real dpi:Screen.devicePixelRatio?Screen.devicePixelRatio / root.enlarge : 1.0 / root.enlarge
+//    property real enlarge: 2.0
+//    property real dpi:Screen.devicePixelRatio?Screen.devicePixelRatio / root.enlarge : 1.0 / root.enlarge
+    property real dpi: Screen.devicePixelRatio? Screen.devicePixelRatio : 1
     property string usedConfig: appConfig;
     property bool showMouse: UI_config[root.usedConfig].showMouse
     property bool useOpengl: UI_config[root.usedConfig].useOpengl
@@ -60,15 +62,31 @@ ApplicationWindow {
         deviceConfig.params.timeSync = currentDate
 
     }
+    WebSocketManager {
+        id: webSocketManager
+    }
+    function dispatchUploadList(uploadList) {
+        var infoObj = {}
+        for (var i=0; i<uploadList.length; i++) {
+            var item = uploadList[i]
+            var key = Object.keys(item)[0]
+            var value = item[key]
+            infoObj[key] = value
+        }
+        console.log(JSON.stringify(infoObj))
+        var info = {
+            "jsonrpc": "2.0",
+            "method": "setUploadInfo",
+            "params": infoObj
+        }
+        webSocketManager.sendTextMessage(JSON.stringify(info))
+    }
 
     signal record()
     signal stop()
 
     Component.onCompleted: {
         syncDeviceTime()
-    }
-    WebSocketManager {
-        id: webSocketManager
     }
 
     menuBar: MenuBar {
@@ -123,20 +141,27 @@ ApplicationWindow {
         height: 30
         Row {
             anchors.fill: parent
+            leftPadding: 5
             spacing: 6
 
-            Button {
-                text: "开始"
-                font.pixelSize: 10/root.dpi
-                height: parent.height
+            CustomizedButton {
+                id: recordBtn
+                height: parent.height - parent.spacing
+                Component.onCompleted: {
+                    recordBtn.text = "开始"
+                    recordBtn.fontSize = 14/root.dpi
+                }
                 onClicked: {
                     record()
                 }
             }
-            Button {
-                text: "停止"
-                font.pixelSize: 10/root.dpi
-                height: parent.height
+            CustomizedButton {
+                id: stopBtn
+                height: parent.height - parent.spacing
+                Component.onCompleted: {
+                    stopBtn.text = "停止"
+                    stopBtn.fontSize = 14/root.dpi
+                }
                 onClicked: {
                     stop()
                 }
@@ -191,8 +216,11 @@ ApplicationWindow {
                     stream.dataReceived(clientId)
                 }
                 function onIncomingTextMessageReceived(message) {
-                    console.log("WebSocketManager: ", message)
+//                    console.log("WebSocketManager: ", message)
                 }
+//                function onLeqDataReceived(leqData) {
+//                    console.log(leqData["data"]["values"])
+//                }
             }
             Connections {
                 target: stream

@@ -57,6 +57,12 @@ Item {
         }
     }
 
+    function clear(){
+        chart.clearData();
+        spchart.maxArr = [];
+        spchart.dataArr = [];
+    }
+
     function setFrameCount( channelId_ , count , time ){
         if( channelId_ === spchart.channelId ){
             spchart.frameCount = count
@@ -72,9 +78,7 @@ Item {
             spchart.channelId = channelId_
             if( dataContent.file != "" ){
 
-                chart.clearData();
-                spchart.maxArr = [];
-                spchart.dataArr = [];
+                spchart.clear();
 
                 dm.getEigenvaluesByType( spchart.channelId , spchart.type );
             }else{
@@ -90,9 +94,9 @@ Item {
         if( spchart.type !== value ){
             spchart.type = value
             spchart.unity = unity
-            chart.clearData();
-            spchart.maxArr = [];
-            spchart.dataArr = [];
+
+            spchart.clear();
+
             dm.getEigenvalueData( spchart.channelId , spchart.type )
         }
         // 可能要清空数据 可能要读取历史数据
@@ -100,9 +104,7 @@ Item {
 
     function getDataFromOpenData(){
         if( spchart.disabled ) return;
-        chart.clearData();
-        spchart.maxArr = [];
-        spchart.dataArr = [];
+        spchart.clear();
 
         spchart.reprocess = true;
         dm.getEigenvaluesByType( spchart.channelId , spchart.type );
@@ -115,9 +117,7 @@ Item {
         if( spchart.type !== type ){
             spchart.type = type
             spchart.unity = unity
-            chart.clearData();
-            spchart.dataArr = [];
-            spchart.maxArr = [];
+            spchart.clear();
             dm.getEigenvaluesByType( spchart.channelId , spchart.type );
         }
     }
@@ -262,9 +262,7 @@ Item {
                 return;
             }
 
-            spchart.dataArr = [];
-            spchart.maxArr = [];
-            chart.clearData();
+            spchart.clear();
 
             dm.getEigenvalueData( spchart.channelId , spchart.type )
 

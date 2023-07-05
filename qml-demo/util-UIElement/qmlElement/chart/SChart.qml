@@ -214,7 +214,6 @@ Item {
 
     }
 
-
     Connections {
         target: dm
         /*

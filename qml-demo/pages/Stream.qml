@@ -12,6 +12,35 @@ Item {
         console.log("stream page: ", data)
     }
 
+    signal stop()
+    signal record()
+    signal leqDataReceived(string channelId, string data)
+    signal fftDataReceived(string channelId, var data)
+    signal prpdDataReceived(var data)
+    Connections {
+        target: root
+        function onRecord() {
+            record()
+        }
+        function onStop() {
+            stop()
+        }
+    }
+    Connections {
+        target: webSocketManager
+        function onLeqDataReceived(leqData) {
+            leqData.dt = 1 / leqData.values.length
+            var dataStr = JSON.stringify(leqData)
+            leqDataReceived("sound", dataStr)
+        }
+        function onFftDataReceived(fftData) {
+            fftDataReceived("sound", fftData)
+        }
+        function onPrpdDataReceived(prpdData) {
+            prpdDataReceived(prpdData)
+        }
+    }
+
     Column {
         anchors.fill: parent
         spacing: 5
@@ -19,28 +48,6 @@ Item {
             spacing: 5
             width: stream.width
             height: (stream.height - parent.spacing) * 0.5
-//            Loader {
-//                height: parent.height
-//                width: (parent.width - parent.spacing) * 0.5
-//                sourceComponent: rect
-
-//            }
-//            Item {
-//                height: parent.height
-//                width: (parent.width - parent.spacing) * 0.5
-//                Loader {
-////                    height: parent.height
-////                    width: (parent.width - parent.spacing) * 0.5
-//                    anchors.fill: parent
-//                    sourceComponent: rect
-//                }
-//                LeqChart {
-//                    anchors.top: parent.anchors.top
-//                    height: parent.height - 8
-//                    width: parent.width - 8
-//                    anchors.centerIn: parent
-//                }
-//            }
             LeqChartBox {
                 height: parent.height
                 width: (parent.width - parent.spacing) * 0.5
@@ -49,25 +56,6 @@ Item {
                 height: parent.height
                 width: (parent.width - parent.spacing) * 0.5
             }
-
-
-//            Item {
-//                height: parent.height
-//                width: (parent.width - parent.spacing) * 0.5
-//                Loader {
-////                    height: parent.height
-////                    width: (parent.width - parent.spacing) * 0.5
-//                    anchors.fill: parent
-//                    sourceComponent: rect
-//                }
-//                SpectrumChart {
-//                    anchors.top: parent.anchors.top
-//                    height: parent.height - 8
-//                    width: parent.width - 8
-//                    anchors.centerIn: parent
-//                }
-//            }
-
         }
         Row {
             spacing: 5
@@ -81,30 +69,7 @@ Item {
                 height: parent.height
                 width: (parent.width - parent.spacing) * 0.5
             }
-//            Item {
-//                height: parent.height
-//                width: (parent.width - parent.spacing) * 0.5
-//                Loader {
-////                    height: parent.height
-////                    width: (parent.width - parent.spacing) * 0.5
-//                    anchors.fill: parent
-//                    sourceComponent: rect
-//                }
-//                TimedataChart {
-//                    anchors.top: parent.anchors.top
-//                    height: parent.height - 8
-//                    width: parent.width - 8
-//                    anchors.centerIn: parent
-//                }
-//            }
-//            Loader {
-//                height: parent.height
-//                width: (parent.width - parent.spacing) * 0.5
-//                sourceComponent: rect
-//            }
-
         }
-
     }
 
     Component {
@@ -142,18 +107,4 @@ Item {
             width: (parent.width - parent.spacing) * 0.5
         }
     }
-
-    signal stop()
-    signal record()
-    Connections {
-        target: root
-        function onRecord() {
-            console.log("record in stream page")
-            record()
-        }
-        function onStop() {
-            stop()
-        }
-    }
-
 }

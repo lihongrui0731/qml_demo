@@ -11,9 +11,9 @@ Item {
     property bool isFull: false
     property var dataArr:({})
     property bool disabled: false
-    property string backgroundColor: root.colorConfig["cardColor"]
+    property string backgroundColor: root.cardColor
 
-    function changeTimeLine( timeline ){        
+    function changeTimeLine( timeline ){
         if( scatterChart.disabled ) return;
         schart.changeTimeLine( timeline );
     }
@@ -21,6 +21,14 @@ Item {
     function start(){
         if( scatterChart.disabled ) return;
         schart.reset();
+    }
+
+    function setData(data_){
+        schart.setData( data_ );
+    }
+
+    function addData(data_){
+        schart.addData(data_);
     }
 
     Connections {
@@ -69,10 +77,10 @@ Item {
         fontSize: 10 / root.dpi
         dpi: root.dpi
         useOpengl: root.useOpengl
-        background: scatterChart.backgroundColor
         textColor: "#aaaaaa"
+        bgColor: scatterChart.backgroundColor
         Component.onCompleted: {
-            schart.rePaint();
+            schart.rePaint()
         }
     }
 

@@ -48,5 +48,6 @@ HEADERS += \
   easy.h \
   filemanager.h \
 #  tdmsdata.h \
+  src/dataType.h \
   uithread.h \
   ws_server.h

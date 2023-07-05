@@ -98,5 +98,6 @@
         <file>js/sound_config.json</file>
         <file>js/update.json</file>
         <file>js/vibration_config.json</file>
+        <file>qmlElement/chart/FFTChart.qml</file>
     </qresource>
 </RCC>

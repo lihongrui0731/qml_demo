@@ -33,17 +33,8 @@ Item {
 
             if( channelId_ == chart.channelId && !chart.isChangeChannel ){
                 // var json_ = JSON.parse( d );
+                chart.setSpectraData(channelId_ ,json_ );
 
-                if( chart.dt !== json_["dt"] && json_["dt"] > 0 ){
-                    chart.unitLength = json_["bandWidth"] / json_["deltaFreq"];
-                    chart.dt = json_["dt"];
-                    chart.xmax = json_["bandWidth"]
-                    chart.unit = json_["deltaFreq"];
-
-                    chartView.dataArr = new Array(chart.unitLength).fill(0);
-                }
-
-                chart.addData( json_["values"] , json_["frameCount"] );
             }
         }
 
@@ -52,17 +43,22 @@ Item {
             if( channelId_ == chart.channelId ){
                 // var json_ = JSON.parse( data_ );
 
-                if( chart.dt !== json_["dt"] && json_["dt"] > 0 ){
-                    chart.unitLength = json_["bandWidth"] / json_["deltaFreq"];
-                    chart.dt = json_["dt"];
-                    chart.xmax = json_["bandWidth"]
-                    chart.unit = json_["deltaFreq"];
-                    chartView.dataArr = new Array(chart.unitLength).fill(0);
-                }
-
-                chart.addData( json_["values"] , json_["frameCount"] );
+                chart.setSpectraData(channelId_ ,json_ );
             }
         }
+    }
+
+    function setSpectraData( channelId_ , json_ ){
+        if( chart.dt !== json_["dt"] && json_["dt"] > 0 ){
+            chart.unitLength = json_["bandWidth"] / json_["deltaFreq"];
+            chart.dt = json_["dt"];
+            chart.xmax = json_["bandWidth"]
+            chart.unit = json_["deltaFreq"];
+
+            chartView.dataArr = new Array(chart.unitLength).fill(0);
+        }
+
+        chart.addData( json_["values"] , json_["frameCount"] );
     }
 
     function getDataFromOpenData(){

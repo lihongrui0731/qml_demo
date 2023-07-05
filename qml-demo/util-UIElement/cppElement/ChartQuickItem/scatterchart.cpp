@@ -70,7 +70,8 @@ void ScatterChart::initializePlot(){
     }
 
     m_ppixMap = new QPixmap(100, 100);
-    m_ppixMap->fill(m_background);
+    qDebug() << m_background << "^&%^&^&^&^&^&^&^&^&^&^&^&^&^&^&";
+    m_ppixMap->fill(QColor(m_background));
 
     QPen _pen;
     _pen.setColor(Qt::lightGray);

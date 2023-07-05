@@ -12,5 +12,6 @@
         <file>charts/WaveChartBox.qml</file>
         <file>charts/PrpdChartBox.qml</file>
         <file>WebSocketServer.qml</file>
+        <file>components/CustomizedButton.qml</file>
     </qresource>
 </RCC>
