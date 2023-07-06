@@ -11,9 +11,11 @@ class WebSocketManager : public QObject
 public:
     WebSocketManager();
     ~WebSocketManager();
-
     // Sending
     Q_INVOKABLE void sendTextMessage(const QString message);
+    QMap<QString, QJsonArray> m_maintainWave;
+    int m_maintainWaveLength {48000};
+
 private:
     WsServer * WebSocketServer;
     QThread* wsServerThread;
@@ -44,7 +46,7 @@ signals:
     void leqDataReceived(const QJsonObject& data);
     void fftDataReceived(const QJsonObject& data);
     void prpdDataReceived(const QJsonObject& data);
-    void waveDataReceived(const int channel, const QVector<float>& data);
+    void waveDataReceived(const QJsonObject& data);
 
 public slots:
     // Receiving

@@ -41,7 +41,7 @@ void WebSocketManager::onIncomingTextMessageReceived(const QString& message)
 
 void WebSocketManager::onIncomingBinaryMessageReceived(const QByteArray& message)
 {
-    qDebug() << "binary received" << message.size();
+//    qDebug() << "binary received" << message.size();
     handleWaveData(message);
 }
 
@@ -96,17 +96,30 @@ void WebSocketManager::handleWaveData(const QByteArray& data)
     reader >> header->timestamp >> header->channelFlag;
 //    reader.skipRawData(7);
     int channel{(int)(header->channelFlag)};
+    if(!m_maintainWave.contains(QString::number(channel))) {
+        QJsonArray channelData;
+        m_maintainWave.insert(QString::number(channel), channelData);
+    }
     int byteLength { data.size() - 12 };
-    int arrayLength { byteLength / (int)(sizeof(float)) };
-    QVector<float> values;
+    int arrayLength { byteLength / (int)(sizeof(qint32)) };
 
-    for (int i{0}; i<arrayLength; ++i) {
+    for (int i{0}; i<arrayLength; i++) {
         qint32 value;
         reader >> value;
-        values.push_back(value);
-    }
+        if(m_maintainWave[QString::number(channel)].size() < m_maintainWaveLength) {
+            m_maintainWave[QString::number(channel)].append(value);
+        } else {
+            QJsonObject outData;
+            QJsonObject channelData;
+            channelData.insert("values", m_maintainWave[QString::number(channel)]);
+            channelData.insert("dt", (1.0/48000.0));
+            outData.insert(QString::number(channel), channelData);
+            emit waveDataReceived(outData);
 
-    emit waveDataReceived(channel, values);
+            m_maintainWave[QString::number(channel)] = QJsonArray();
+            m_maintainWave[QString::number(channel)].append(value);
+        }
+    }
 }
 void WebSocketManager::setupStreamReader(QDataStream& reader)
 {

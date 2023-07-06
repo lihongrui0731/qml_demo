@@ -17,6 +17,7 @@ const config = {
         "wavEn":false,
         "fftEn":true,
         "prpdEn":false,
-        "localEn":false
+        "localEn":false,
+        "rawdataEn": false
     }
 }

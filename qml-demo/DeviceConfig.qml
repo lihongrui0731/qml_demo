@@ -14,23 +14,11 @@ Dialog {
     property var uploadListTemp: []
     function openDeviceConfig() {
         console.log("device config dialog opening.......")
-//        for (var i=0; i<deviceConfigDialog.uploadList.length; i++) {
-//            var key = Object.keys(deviceConfigDialog.uploadList[i])[0]
-//            console.log(key, deviceConfigDialog.uploadList[i][key])
-//        }
         deviceConfigDialog.setUploadList(root.uploadList)
         uploadListRepeater.model = deviceConfigDialog.uploadList
         deviceConfigDialog.open()
     }
     function setUploadList(info) {
-//        var result = []
-//        var keys = Object.keys(info)
-//        for (var i=0; i<keys.length; i++) {
-//            var item = {}
-//            item[keys[i]] = info[keys[i]]
-//            result.push(item)
-//        }
-//        deviceConfigDialog.uploadListTemp = result
         deviceConfigDialog.uploadList = info
     }
     function changeUploadListTemp(key, value) {
@@ -38,11 +26,6 @@ Dialog {
 //            console.log(deviceConfigDialog.uploadList[i][key])
             if(deviceConfigDialog.uploadListTemp[i][key] !== undefined) {
                 deviceConfigDialog.uploadListTemp[i][key] = value
-//                console.log("<<<<<<<<<<<<<<<<<<<")
-//                console.log(key, "matched and switch to", value)
-//                console.log("got temp: ", key, deviceConfigDialog.uploadListTemp[i][key])
-//                console.log("and original: ", key, deviceConfigDialog.uploadList[i][key])
-//                console.log(">>>>>>>>>>>>>>>>>>>")
             }
         }
     }
@@ -51,18 +34,12 @@ Dialog {
 //            console.log(deviceConfigDialog.uploadList[i][key])
             if(deviceConfigDialog.uploadList[i][key] !== undefined) {
                 deviceConfigDialog.uploadList[i][key] = value
-//                console.log("<<<<<<<<<<<<<<<<<<<")
-//                console.log(key, "matched and switch to", value)
-//                console.log("got temp: ", key, deviceConfigDialog.uploadListTemp[i][key])
-//                console.log("and original: ", key, deviceConfigDialog.uploadList[i][key])
-//                console.log(">>>>>>>>>>>>>>>>>>>")
             }
         }
     }
     function confirmUploadList() {
         root.changeUploadList(deviceConfigDialog.uploadList)
         console.log("confirmed!!!!")
-        // todo: send info to device
         console.log(JSON.stringify(deviceConfigDialog.uploadList))
         root.dispatchUploadList(deviceConfigDialog.uploadList)
     }

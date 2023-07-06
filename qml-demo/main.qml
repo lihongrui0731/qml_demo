@@ -39,6 +39,8 @@ ApplicationWindow {
     property var deviceParams: root.getDeviceParams()
     property var uploadList: root.getUploadList()
     property string currentDate: Qt.formatDateTime(new Date(), "yyyy-MM-dd HH:mm:ss")
+    signal record()
+    signal stop()
 
     function getDeviceParams() {
         return root.deviceConfig.params
@@ -60,11 +62,19 @@ ApplicationWindow {
 
     function syncDeviceTime() {
         deviceConfig.params.timeSync = currentDate
+    }
 
+    function dispatchParams(configInfo) {
+        root.syncDeviceTime()
+        var info = {
+            "jsonrpc": "2.0",
+            "method": "setParam",
+            "params": deviceConfig.params
+        }
+        console.log(JSON.stringify(info))
+        webSocketManager.sendTextMessage(JSON.stringify(info))
     }
-    WebSocketManager {
-        id: webSocketManager
-    }
+
     function dispatchUploadList(uploadList) {
         var infoObj = {}
         for (var i=0; i<uploadList.length; i++) {
@@ -81,14 +91,19 @@ ApplicationWindow {
         }
         webSocketManager.sendTextMessage(JSON.stringify(info))
     }
-
-    signal record()
-    signal stop()
-
-    Component.onCompleted: {
-        syncDeviceTime()
+    Connections {
+        target: webSocketManager
+        function onDeviceIDReceived(deviceID) {
+            root.dispatchParams()
+        }
     }
 
+    Component.onCompleted: {
+    }
+
+    WebSocketManager {
+        id: webSocketManager
+    }
     menuBar: MenuBar {
         Menu {
             id: fileMenu

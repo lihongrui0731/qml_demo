@@ -13,6 +13,13 @@ Item {
             cardContentPosition = waveChartBox.getContentPosition()
         }
 
+        Connections {
+            target: webSocketManager
+            function onWaveDataReceived(data) {
+                waveChart.setJsonData("sound", data["1"])
+            }
+        }
+
         TimedataChart {
             id: waveChart
             anchors.margins: 5
@@ -20,6 +27,7 @@ Item {
             y: waveChartBox.cardContentPosition.y
             width: waveChartBox.cardContentPosition.width - waveChart.anchors.margins
             height: waveChartBox.cardContentPosition.height - waveChart.anchors.margins
+            channelId: "sound"
         }
     }
 }
