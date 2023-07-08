@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 //import QtQuick.Dialogs 1.2
 
 Dialog {
+    id: deviceConfigDialog
     title: "采集配置"
     height: root.height * 0.7
     width: root.width * 0.4
@@ -10,16 +11,18 @@ Dialog {
     standardButtons: Dialog.Ok | Dialog.Cancel | Dialog.Apply
 
     property var uploadList: []
+    property var confirmedUploadList: []
 
-    property var uploadListTemp: []
     function openDeviceConfig() {
         console.log("device config dialog opening.......")
-        deviceConfigDialog.setUploadList(root.uploadList)
-        uploadListRepeater.model = deviceConfigDialog.uploadList
+        deviceConfigDialog.setUploadList(JSON.stringify(root.uploadList))
+        console.log(JSON.stringify(this.uploadList))
+//        uploadListRepeater.model = deviceConfigDialog.uploadListTemp
         deviceConfigDialog.open()
     }
     function setUploadList(info) {
-        deviceConfigDialog.uploadList = info
+        deviceConfigDialog.uploadList = JSON.parse(info)
+        deviceConfigDialog.confirmedUploadList = []
     }
     function changeUploadListTemp(key, value) {
         for (var i=0; i<deviceConfigDialog.uploadListTemp.length; i++) {
@@ -29,19 +32,17 @@ Dialog {
             }
         }
     }
-    function changeUploadList(key, value) {
-        for (var i=0; i<deviceConfigDialog.uploadList.length; i++) {
-//            console.log(deviceConfigDialog.uploadList[i][key])
-            if(deviceConfigDialog.uploadList[i][key] !== undefined) {
-                deviceConfigDialog.uploadList[i][key] = value
-            }
+    function changeUploadList(index, key, value) {
+        if(deviceConfigDialog.uploadList[index][key] !== undefined) {
+            deviceConfigDialog.uploadList[index][key] = value
         }
     }
     function confirmUploadList() {
-        root.changeUploadList(deviceConfigDialog.uploadList)
+        deviceConfigDialog.confirmedUploadList = deviceConfigDialog.uploadList
+        root.changeUploadList(deviceConfigDialog.confirmedUploadList)
         console.log("confirmed!!!!")
-        console.log(JSON.stringify(deviceConfigDialog.uploadList))
-        root.dispatchUploadList(deviceConfigDialog.uploadList)
+//        console.log(JSON.stringify(deviceConfigDialog.uploadList))
+//        root.dispatchUploadList(deviceConfigDialog.uploadList)
     }
 
     function setDeviceParams(params) {
@@ -49,7 +50,7 @@ Dialog {
     }
 
     Component.onCompleted: {
-        setUploadList(root.uploadList)
+//        setUploadList(root.uploadList)
         setDeviceParams(root.deviceParams)
     }
     onAccepted: {
@@ -58,6 +59,9 @@ Dialog {
     }
     onRejected: {
         console.log("canceled!")
+        console.log(JSON.stringify(deviceConfigDialog.uploadList))
+        console.log(JSON.stringify(deviceConfigDialog.confirmedUploadList))
+        console.log(JSON.stringify(root.uploadList))
     }
     onApplied: {
         console.log('applied!')
@@ -68,15 +72,15 @@ Dialog {
         spacing: 2
         Repeater {
             id: uploadListRepeater
-            model: deviceConfigDialog.uploadList
+            model: deviceConfigDialog.uploadList.length
             CheckBox {
-                property var key: Object.keys(modelData)[0]
-                checkState: modelData[key]? Qt.Checked : Qt.Unchecked
+                property var key: Object.keys(deviceConfigDialog.uploadList[index])[0]
+                checked: deviceConfigDialog.uploadList[index][key]
                 text: key
-                onCheckStateChanged: {
-//                    console.log("checkbox changed", key, checkState)
-//                    console.log(modelData[key])
-                    changeUploadList(key, checkState === 0? false : true)
+                onCheckedChanged: {
+                    changeUploadList(index, key, checked)
+                    console.log(JSON.stringify(deviceConfigDialog.uploadList))
+                    console.log(JSON.stringify(deviceConfigDialog.confirmedUploadList))
                 }
             }
         }

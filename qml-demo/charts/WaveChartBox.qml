@@ -7,7 +7,7 @@ Item {
     Card {
         id: waveChartBox
         anchors.fill: parent
-        title: "wave"
+        title: "时域波形"
         property var cardContentPosition
         Component.onCompleted: {
             cardContentPosition = waveChartBox.getContentPosition()

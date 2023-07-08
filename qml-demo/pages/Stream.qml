@@ -12,11 +12,6 @@ Item {
         console.log("stream page: ", data)
     }
 
-    signal stop()
-    signal record()
-    signal leqDataReceived(string channelId, string data)
-    signal fftDataReceived(string channelId, var data)
-    signal prpdDataReceived(var data)
     Connections {
         target: root
         function onRecord() {
@@ -24,20 +19,6 @@ Item {
         }
         function onStop() {
             stop()
-        }
-    }
-    Connections {
-        target: webSocketManager
-        function onLeqDataReceived(leqData) {
-            leqData.dt = 1 / leqData.values.length
-            var dataStr = JSON.stringify(leqData)
-            leqDataReceived("sound", dataStr)
-        }
-        function onFftDataReceived(fftData) {
-            fftDataReceived("sound", fftData)
-        }
-        function onPrpdDataReceived(prpdData) {
-            prpdDataReceived(prpdData)
         }
     }
 
@@ -48,7 +29,7 @@ Item {
             spacing: 5
             width: stream.width
             height: (stream.height - parent.spacing) * 0.5
-            LeqChartBox {
+            EvChartBox {
                 height: parent.height
                 width: (parent.width - parent.spacing) * 0.5
             }
@@ -69,42 +50,6 @@ Item {
                 height: parent.height
                 width: (parent.width - parent.spacing) * 0.5
             }
-        }
-    }
-
-    Component {
-        id: rect
-        Rectangle {
-            anchors.fill: parent
-//            color:"#595b5d"
-            color: root.cardColor
-            radius: 5
-        }
-    }
-
-    Component {
-        id: leqBox
-        Loader {
-            sourceComponent: rect
-            height: parent.height
-            width: (parent.width - parent.spacing) * 0.5
-        }
-
-    }
-    Component {
-        id: fftBox
-        Loader {
-            sourceComponent: rect
-            height: parent.height
-            width: (parent.width - parent.spacing) * 0.5
-        }
-    }
-    Component {
-        id: waveBox
-        Loader {
-            sourceComponent: rect
-            height: parent.height
-            width: (parent.width - parent.spacing) * 0.5
         }
     }
 }

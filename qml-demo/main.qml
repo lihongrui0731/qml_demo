@@ -39,8 +39,21 @@ ApplicationWindow {
     property var deviceParams: root.getDeviceParams()
     property var uploadList: root.getUploadList()
     property string currentDate: Qt.formatDateTime(new Date(), "yyyy-MM-dd HH:mm:ss")
-    signal record()
-    signal stop()
+    function record() {
+        var msg = {
+            "jsonrpc": "2.0",
+            "method": "record"
+        }
+        webSocketManager.sendTextMessage(JSON.stringify(msg))
+    }
+
+    function stop() {
+        var msg = {
+            "jsonrpc": "2.0",
+            "method": "stop"
+        }
+        webSocketManager.sendTextMessage(JSON.stringify(msg))
+    }
 
     function getDeviceParams() {
         return root.deviceConfig.params
@@ -58,6 +71,7 @@ ApplicationWindow {
     }
     function changeUploadList(info) {
         root.uploadList = info
+        root.dispatchUploadList(root.uploadList)
     }
 
     function syncDeviceTime() {
@@ -187,6 +201,8 @@ ApplicationWindow {
 
     DeviceConfig {
         id: deviceConfigDialog
+//        uploadList: root.uploadList
+//        uploadListTemp: root.uploadList
     }
 
     FilePicker {

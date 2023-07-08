@@ -21,6 +21,14 @@ Rectangle {
             "height": cardHeader.height
         }
     }
+    function getCardHeaderExrtraPosition() {
+        return {
+            "x": cardHeader.x + name.width,
+            "y": cardHeader.y,
+            "width": cardHeader.width - name.width,
+            "height": card.cardHeaderHeight
+        }
+    }
 
     Item {
         id: card

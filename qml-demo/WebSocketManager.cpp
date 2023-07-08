@@ -78,6 +78,10 @@ void WebSocketManager::handleDataFrame(const QJsonObject& data)
         qDebug() << "leq received";
         emit leqDataReceived(data["data"].toObject());
     }
+    if(frameType == "ev-sp") {
+        qDebug() << "ev-sp received";
+        emit evDataReceived(data["data"].toObject());
+    }
     if(frameType == "spectrum") {
         qDebug() << "fft received";
         emit fftDataReceived(data["data"].toObject());
@@ -114,6 +118,7 @@ void WebSocketManager::handleWaveData(const QByteArray& data)
             channelData.insert("values", m_maintainWave[QString::number(channel)]);
             channelData.insert("dt", (1.0/48000.0));
             outData.insert(QString::number(channel), channelData);
+            qDebug() << outData;
             emit waveDataReceived(outData);
 
             m_maintainWave[QString::number(channel)] = QJsonArray();

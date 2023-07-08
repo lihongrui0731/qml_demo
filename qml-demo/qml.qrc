@@ -4,7 +4,7 @@
         <file>main.qml</file>
         <file>DeviceConfig.qml</file>
         <file>FilePicker.qml</file>
-        <file>charts/LeqChartBox.qml</file>
+        <file>charts/EvChartBox.qml</file>
         <file>components/Card.qml</file>
         <file>charts/FFTChartBox.qml</file>
         <file>pages/DataReview.qml</file>
@@ -13,5 +13,6 @@
         <file>charts/PrpdChartBox.qml</file>
         <file>WebSocketServer.qml</file>
         <file>components/CustomizedButton.qml</file>
+        <file>config/evTypes.js</file>
     </qresource>
 </RCC>

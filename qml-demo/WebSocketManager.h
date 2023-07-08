@@ -44,6 +44,7 @@ signals:
     void sendOutgoingTextMessage(const QString& message);
     void deviceIDReceived(const QString& deviceID);
     void leqDataReceived(const QJsonObject& data);
+    void evDataReceived(const QJsonObject& data);
     void fftDataReceived(const QJsonObject& data);
     void prpdDataReceived(const QJsonObject& data);
     void waveDataReceived(const QJsonObject& data);

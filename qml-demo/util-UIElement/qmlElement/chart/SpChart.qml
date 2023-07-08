@@ -45,6 +45,7 @@ Item {
     property bool unique: false
     property bool isStop: false
     property bool isChangeSize: false
+    property string backgroundColor: root.cardColor
     signal reprocessFinish;
 
     Connections {
@@ -121,6 +122,26 @@ Item {
             dm.getEigenvaluesByType( spchart.channelId , spchart.type );
         }
     }
+    function eigenvalueChanged (channelId_ , s){
+        if( spchart.type == "Level_A" || (spchart.sourseType != "sound" && root.isSound) ){
+            return;
+        }
+
+        if( spchart.disabled ) return;
+        // 实时添加特征值
+
+        if( !s || spchart.adding ){
+            return;
+        }
+        if( spchart.channelId === channelId_ ){
+            var data_ = JSON.parse(s);
+            if( spchart.lastTime === data_.baseTime ){
+                return;
+            }
+            spchart.lastTime = data_.baseTime;
+            spchart.doAddData( s );
+        }
+    }
 
     function doAddData( data ){
         if( spchart.disabled ) return;
@@ -140,6 +161,7 @@ Item {
         if( spchart.type == "Level_A" ){
             return;
         }else{
+            console.log(spchart.type, JSON.stringify(data_["values"][spchart.type]))
             spchart.addXYData( data_["values"][spchart.type] );
             var data__ = { max:spchart.ymax , values: spchart.dataArr };
             chart.addJsonBatchData( data__ );
@@ -282,7 +304,7 @@ Item {
         }
     }
 
-    RhythmLineChart{
+    CLineChart{
         id: chart
         anchors.fill: parent
         xAxisMax: spchart.xmax
@@ -294,6 +316,8 @@ Item {
         dpi: root.dpi
         fontSize: spchart.fontSize
         frameLen: spchart.unitLength
+        textColor: "#aaaaaa"
+        bgColor: spchart.backgroundColor
         Component.onCompleted: {
             chart.rePaint();
         }
