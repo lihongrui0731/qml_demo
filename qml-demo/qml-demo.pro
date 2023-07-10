@@ -18,9 +18,9 @@ include($$PWD/3rdparty/arma.pri)
 SOURCES += \
         WebSocketData.cpp \
         WebSocketManager.cpp \
+		FileManager.cpp \
 #        configmanager.cpp \
 #        datathread.cpp \
-        filemanager.cpp \
         main.cpp \
 #        tdmsdata.cpp \
         uithread.cpp \
@@ -46,7 +46,7 @@ HEADERS += \
 #  configmanager.h \
 #  datathread.h \
   easy.h \
-  filemanager.h \
+  FileManager.h \
 #  tdmsdata.h \
   src/dataType.h \
   uithread.h \

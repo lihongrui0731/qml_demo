@@ -81,18 +81,20 @@ Item {
             y: evChartBox.cardContentPosition.y
             width: evChartBox.cardContentPosition.width - evChartLoader.anchors.margins
             height: evChartBox.cardContentPosition.height - evChartLoader.anchors.margins
+//            onLoaded: {
+//                leqChart.initChart()
+//            }
         }
 
         Component {
             id: leqChartComponent
             LeqChart {
                 id: leqChart
-//                anchors.margins: 5
-//                x: evChartBox.cardContentPosition.x
-//                y: evChartBox.cardContentPosition.y
-//                width: evChartBox.cardContentPosition.width - leqChart.anchors.margins
-//                height: evChartBox.cardContentPosition.height - leqChart.anchors.margins
                 anchors.fill: parent
+                Component.onCompleted: {
+                    leqChart.initChart()
+                }
+
                 Connections {
                     target: webSocketManager
                     function onLeqDataReceived(leqData) {
@@ -106,12 +108,11 @@ Item {
             id: evChartComponent
             SpChart {
                 id: evChart
-//                anchors.margins: 5
-//                x: evChartBox.cardContentPosition.x
-//                y: evChartBox.cardContentPosition.y
-//                width: evChartBox.cardContentPosition.width - evChart.anchors.margins
-//                height: evChartBox.cardContentPosition.height - evChart.anchors.margins
                 anchors.fill: parent
+                Component.onCompleted: {
+                    evChart.initChart()
+                }
+
                 Connections {
                     target: webSocketManager
                     function onEvDataReceived(evData) {
@@ -121,7 +122,7 @@ Item {
                 Connections {
                     target: evBox
                     function onSetEvType(type) {
-                        console.log("-------------set type", type)
+//                        console.log("-------------set type", type)
                         evChart.setType(type, "")
                     }
                 }

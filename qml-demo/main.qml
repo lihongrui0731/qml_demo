@@ -38,7 +38,32 @@ ApplicationWindow {
     property var deviceConfig: Device_config.config
     property var deviceParams: root.getDeviceParams()
     property var uploadList: root.getUploadList()
+    property real currentChannel: 1
+    onCurrentChannelChanged: {
+        console.log("curretn channel change to", currentChannel)
+        deviceParams["channelSelect"] = currentChannel
+        dispatchParams()
+    }
+
+    property var channelOptions: [
+        {"label": "通道1", "value": 1},
+        {"label": "通道2", "value": 2},
+        {"label": "通道3", "value": 3},
+        {"label": "通道4", "value": 4},
+        {"label": "通道5", "value": 5},
+        {"label": "通道6", "value": 6},
+        {"label": "通道7", "value": 7},
+        {"label": "通道8", "value": 8}
+    ]
     property string currentDate: Qt.formatDateTime(new Date(), "yyyy-MM-dd HH:mm:ss")
+    property bool active: true
+    Connections{
+        target: Qt.application
+
+        function onActiveChanged(){
+            root.active = Qt.application.active;
+        }
+    }
     function record() {
         var msg = {
             "jsonrpc": "2.0",
@@ -75,15 +100,15 @@ ApplicationWindow {
     }
 
     function syncDeviceTime() {
-        deviceConfig.params.timeSync = currentDate
+        deviceParams.timeSync = currentDate
     }
 
-    function dispatchParams(configInfo) {
+    function dispatchParams() {
         root.syncDeviceTime()
         var info = {
             "jsonrpc": "2.0",
             "method": "setParam",
-            "params": deviceConfig.params
+            "params": deviceParams
         }
         console.log(JSON.stringify(info))
         webSocketManager.sendTextMessage(JSON.stringify(info))
@@ -105,6 +130,10 @@ ApplicationWindow {
         }
         webSocketManager.sendTextMessage(JSON.stringify(info))
     }
+
+    Component.onCompleted: {
+    }
+
     Connections {
         target: webSocketManager
         function onDeviceIDReceived(deviceID) {
@@ -112,8 +141,6 @@ ApplicationWindow {
         }
     }
 
-    Component.onCompleted: {
-    }
 
     WebSocketManager {
         id: webSocketManager
@@ -171,6 +198,7 @@ ApplicationWindow {
         Row {
             anchors.fill: parent
             leftPadding: 5
+            rightPadding: 5
             spacing: 6
 
             CustomizedButton {
@@ -195,6 +223,40 @@ ApplicationWindow {
                     stop()
                 }
             }
+
+            Rectangle {
+                height: parent.height
+                width: 100
+            }
+
+            ButtonGroup {
+                id: channelsButtonGroup
+            }
+            Rectangle {
+                height: parent.height
+                width: parent.width * 0.5
+                color: root.cardColor
+                radius: 5
+                Row {
+                    id: channelsRow
+                    height: parent.height
+
+                    Repeater {
+                        model: 8
+                        RadioButton {
+                            height: parent.height
+                            property real value: root.channelOptions[index]["value"]
+                            text: root.channelOptions[index]["label"]
+                            checked: currentChannel === value
+                            ButtonGroup.group: channelsButtonGroup
+                            onCheckedChanged: {
+                                currentChannel = value
+                            }
+                        }
+                    }
+                }
+            }
+
         }
     }
 

@@ -27,7 +27,7 @@ private:
     };
     struct HeaderInfo {
         quint64 timestamp{};
-        quint32 channelFlag{};
+        qint32 channelFlag{};
 //        quint8 dataType{};
         //quint8 reserved[7];
 //        quint32 totalLength{};

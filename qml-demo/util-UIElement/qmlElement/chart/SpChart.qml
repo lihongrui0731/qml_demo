@@ -98,7 +98,7 @@ Item {
 
             spchart.clear();
 
-            dm.getEigenvalueData( spchart.channelId , spchart.type )
+//            dm.getEigenvalueData( spchart.channelId , spchart.type )
         }
         // 可能要清空数据 可能要读取历史数据
     }
@@ -161,7 +161,6 @@ Item {
         if( spchart.type == "Level_A" ){
             return;
         }else{
-            console.log(spchart.type, JSON.stringify(data_["values"][spchart.type]))
             spchart.addXYData( data_["values"][spchart.type] );
             var data__ = { max:spchart.ymax , values: spchart.dataArr };
             chart.addJsonBatchData( data__ );
@@ -319,6 +318,7 @@ Item {
         textColor: "#aaaaaa"
         bgColor: spchart.backgroundColor
         Component.onCompleted: {
+            chart.reInitial()
             chart.rePaint();
         }
     }

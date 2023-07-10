@@ -124,6 +124,12 @@ Item {
 
     }
 
+    function initChart() {
+        lineChart.clearData();
+        lineChart.reInitial()
+        lineChart.resetCurveLine()
+    }
+
     function setData( json_ ){
         if( ( chart.dt !== json_[0]["dt"] && json_[0]["dt"] > 0 ) || chart.times == 0 ){
             chart.dt = json_[0]["dt"];

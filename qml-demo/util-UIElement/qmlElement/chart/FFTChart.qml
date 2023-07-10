@@ -29,6 +29,13 @@ Item {
     property int fontSize: 10/root.dpi
     property string backgroundColor: root.colorConfig["cardColor"]
 
+    function initChart() {
+        chart.isChangeChannel = true;
+        lineChart.reInitial();
+        lineChart.reSize();
+        chart.isChangeChannel = false;
+    }
+
     function addSpectraData( channelId_ , data ){
 //        console.log(JSON.stringify(data))
         if( channelId_ === chart.channelId && !chart.isChangeChannel ){

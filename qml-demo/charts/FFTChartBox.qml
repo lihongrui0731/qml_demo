@@ -11,6 +11,7 @@ Item {
         property var cardContentPosition
         Component.onCompleted: {
             cardContentPosition = fftChartBox.getContentPosition()
+            fftChart.initChart()
         }
 
         Connections {

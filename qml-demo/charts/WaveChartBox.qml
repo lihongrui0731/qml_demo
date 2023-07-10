@@ -11,6 +11,7 @@ Item {
         property var cardContentPosition
         Component.onCompleted: {
             cardContentPosition = waveChartBox.getContentPosition()
+            waveChart.reflash()
         }
 
         Connections {
