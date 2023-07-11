@@ -27,6 +27,7 @@ ApplicationWindow {
 
 //    property real enlarge: 2.0
 //    property real dpi:Screen.devicePixelRatio?Screen.devicePixelRatio / root.enlarge : 1.0 / root.enlarge
+    signal changeCurrentChannel(ch:real)
     property real dpi: Screen.devicePixelRatio? Screen.devicePixelRatio : 1
     property string usedConfig: appConfig;
     property bool showMouse: UI_config[root.usedConfig].showMouse
@@ -40,9 +41,10 @@ ApplicationWindow {
     property var uploadList: root.getUploadList()
     property real currentChannel: 1
     onCurrentChannelChanged: {
-        console.log("curretn channel change to", currentChannel)
+        console.log("current channel change to", currentChannel)
         deviceParams["channelSelect"] = currentChannel
         dispatchParams()
+        changeCurrentChannel(currentChannel)
     }
 
     property var channelOptions: [
@@ -129,9 +131,6 @@ ApplicationWindow {
             "params": infoObj
         }
         webSocketManager.sendTextMessage(JSON.stringify(info))
-    }
-
-    Component.onCompleted: {
     }
 
     Connections {

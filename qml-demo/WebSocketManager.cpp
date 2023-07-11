@@ -101,13 +101,13 @@ void WebSocketManager::handleWaveData(const QByteArray& data)
 //    reader.skipRawData(7);
     int channel{};
     quint32 mask{1};
-    for (int ch {1}; ch <= (int)(sizeof(quint32)); ++ch, mask <<= 1) {
+    for (int ch {1}; ch <= (int)(sizeof(quint32))<<1; ++ch, mask <<= 1) {
         if (header->channelFlag & mask) {
             channel = ch;
             break;
         }
     }
-    qDebug() << channel;
+//    qDebug() << channel;
     if(!m_maintainWave.contains(QString::number(channel))) {
         QJsonArray channelData;
         m_maintainWave.insert(QString::number(channel), channelData);
@@ -126,7 +126,7 @@ void WebSocketManager::handleWaveData(const QByteArray& data)
             channelData.insert("values", m_maintainWave[QString::number(channel)]);
             channelData.insert("dt", (1.0/48000.0));
             outData.insert(QString::number(channel), channelData);
-//            qDebug() << outData;
+            qDebug() << channel << outData[QString::number(channel)].toObject()["values"].toArray().size();
             emit waveDataReceived(outData);
 
             m_maintainWave[QString::number(channel)] = QJsonArray();

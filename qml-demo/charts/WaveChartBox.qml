@@ -9,6 +9,7 @@ Item {
         anchors.fill: parent
         title: "时域波形"
         property var cardContentPosition
+        property string channel: "1"
         Component.onCompleted: {
             cardContentPosition = waveChartBox.getContentPosition()
             waveChart.reflash()
@@ -17,7 +18,14 @@ Item {
         Connections {
             target: webSocketManager
             function onWaveDataReceived(data) {
-                waveChart.setJsonData("sound", data["1"])
+                waveChart.setJsonData("sound", data[waveChartBox.channel])
+            }
+        }
+        Connections {
+            target: root
+            function onChangeCurrentChannel(ch) {
+                waveChart.reflash()
+                waveChartBox.channel = ch.toString()
             }
         }
 

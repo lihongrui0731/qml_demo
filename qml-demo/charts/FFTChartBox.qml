@@ -20,6 +20,12 @@ Item {
                 fftChart.addSpectraData("sound", fftData)
             }
         }
+        Connections {
+            target: root
+            function onChangeCurrentChannel(ch) {
+                fftChart.initChart()
+            }
+        }
 
         FFTChart {
             id: fftChart

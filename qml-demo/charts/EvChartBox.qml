@@ -102,6 +102,12 @@ Item {
                         leqChart.setLeqData("sound", JSON.stringify(leqData))
                     }
                 }
+                Connections {
+                    target: root
+                    function onChangeCurrentChannel(ch) {
+                        if(evType === "Level_A") leqChart.initChart()
+                    }
+                }
             }
         }
         Component {
@@ -124,6 +130,12 @@ Item {
                     function onSetEvType(type) {
 //                        console.log("-------------set type", type)
                         evChart.setType(type, "")
+                    }
+                }
+                Connections {
+                    target: root
+                    function onChangeCurrentChannel(ch) {
+                        if(evType !== "Level_A") evChart.initChart()
                     }
                 }
             }
