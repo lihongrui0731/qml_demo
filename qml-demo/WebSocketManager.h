@@ -13,7 +13,7 @@ public:
     ~WebSocketManager();
     // Sending
     Q_INVOKABLE void sendTextMessage(const QString message);
-    QMap<QString, QJsonArray> m_maintainWave;
+    QHash<int, QVector<qint32>> m_maintainWave;
     int m_maintainWaveLength {48000};
 
 private:
@@ -33,6 +33,11 @@ private:
 //        quint32 totalLength{};
     };
     void setupStreamReader(QDataStream& reader);
+    QJsonArray toJsonArray(const QVector<qint32>& myVec) {
+        QJsonArray result;
+        std::copy (myVec.begin(), myVec.end(), std::back_inserter(result));
+        return result;
+    }
     void messageReceived(const QString& textData);
     void handleDeviceID(const QString& deviceID);
     void dataReceived(const QJsonObject& dataObj);
