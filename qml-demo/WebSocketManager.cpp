@@ -125,20 +125,20 @@ void WebSocketManager::handleWaveData(const QByteArray& data)
         qint32 value;
         reader >> value;
 
-        if(m_maintainWave[i].size() < m_maintainWaveLength){
+        if(m_maintainWave[channels.at( i % channels.size() )].size() < m_maintainWaveLength){
             QVector<qint32>& value_ = m_maintainWave[ channels.at( i % channels.size() ) ];
             value_.push_back( value );
             m_maintainWave.insert( channels.at( i % channels.size() ) , value_ );
         } else {
             QJsonObject outData;
             QJsonObject channelData;
-            channelData.insert("values", toJsonArray(m_maintainWave[channel]));
+            channelData.insert("values", toJsonArray(m_maintainWave[channels.at( i % channels.size() )]));
             channelData.insert("dt", (1.0/48000.0));
-            outData.insert(QString::number(channel), channelData);
-//            qDebug() << channel << outData[QString::number(channel)].toObject()["values"].toArray().size();
+            outData.insert(QString::number(channels.at( i % channels.size() )), channelData);
+            qDebug() << channels.at( i % channels.size() ) << outData[QString::number(channels.at( i % channels.size() ))].toObject()["values"].toArray().size();
             emit waveDataReceived(outData);
 
-            m_maintainWave[channel].clear();
+            m_maintainWave[channels.at( i % channels.size() )].clear();
             QVector<qint32>& value_ = m_maintainWave[ channels.at( i % channels.size() ) ];
             value_.push_back( value );
             m_maintainWave.insert( channels.at( i % channels.size() ) , value_ );
